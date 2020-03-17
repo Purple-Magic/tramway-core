@@ -65,7 +65,6 @@ class Tramway::Core::ApplicationDecorator
     end
   end
 
-
   def link
     if object.try :file
       object.file.url

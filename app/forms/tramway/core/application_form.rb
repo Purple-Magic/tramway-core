@@ -13,7 +13,9 @@ module Tramway::Core
           if class_name.is_a? Array
             self.class.send(:define_method, "#{association}=") do |value|
               association_class = value.split('_')[0..-2].join('_').camelize
-              association_class = association_class.constantize if association_class.is_a? String
+              if association_class.is_a? String
+                association_class = association_class.constantize
+              end
               if association_class.nil?
                 raise Tramway::Error.new(plugin: :core, method: :initialize, message: 'Polymorphic association class is nil. Maybe, you should write `assocation #{association_name}` after `properties #{association_name}_id, #{association_name}_type`')
               else
@@ -76,7 +78,9 @@ module Tramway::Core
       yaml_config_file_path = Rails.root.join('app', 'forms', "#{self.class.name.underscore}.yml")
       if File.exist? yaml_config_file_path
         @form_properties = YAML.load_file(yaml_config_file_path).deep_symbolize_keys
-        @form_properties.deep_merge! @form_properties_additional if @form_properties_additional
+        if @form_properties_additional
+          @form_properties.deep_merge! @form_properties_additional
+        end
         @form_properties
       else
         []
