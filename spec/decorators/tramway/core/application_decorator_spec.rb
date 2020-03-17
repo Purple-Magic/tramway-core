@@ -23,6 +23,9 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
     it 'class should have only this methods list' do
       expect(class_methods.should =~ %i[
         decorate_association
+        decorate_associations
+        define_main_association_method
+        delegate_attributes
         list_attributes
         decorate
         model_class
@@ -141,12 +144,7 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
       end
 
       it 'returns attributes' do
-        date_format = case ENV['LOCALE']
-                      when 'ru'
-                        '%d.%m.%Y %H:%M'
-                      when 'en'
-                        '%m/%d/%Y %H:%M'
-                      end
+        date_format = '%d.%m.%Y %H:%M'
         expect(decorated_test_model.attributes).to eq({
           text: test_model.text,
           created_at: test_model.created_at.strftime(date_format),
