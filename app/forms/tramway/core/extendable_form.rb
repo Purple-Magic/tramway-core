@@ -24,9 +24,7 @@ class Tramway::Core::ExtendableForm
 
           define_method 'properties' do
             hash = simple_properties.each_with_object({}) do |property, h|
-              unless model.class.state_machines.keys.include?(property[0])
-                h.merge! property[0] => property[1]
-              end
+              h.merge! property[0] => property[1] unless model.class.state_machines.keys.include?(property[0])
             end
             more_properties.reduce(hash) do |h, property|
               h.merge! property[0] => {
@@ -58,13 +56,13 @@ class Tramway::Core::ExtendableForm
                     validator_object = "#{pair[0].to_s.camelize}Validator".constantize.new(attributes: :not_blank)
                     if pair[1] == 'true' && !validator_object.send(:valid?, value)
                       model.errors.add property[0],
-                                       I18n.t("activerecord.errors.models.#{model.class.name.underscore}.attributes.default.#{pair[0]}", value: value)
+                        I18n.t("activerecord.errors.models.#{model.class.name.underscore}.attributes.default.#{pair[0]}", value: value)
                     end
                   when 'inclusion'
                     in_array = pair[1][:in]
                     unless value.in? in_array
                       model.errors.add property[0],
-                                       I18n.t("activerecord.errors.models.#{model.class.name.underscore}.attributes.default.#{pair[0]}", value: value)
+                        I18n.t("activerecord.errors.models.#{model.class.name.underscore}.attributes.default.#{pair[0]}", value: value)
                     end
                   end
                 end

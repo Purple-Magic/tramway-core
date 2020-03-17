@@ -38,9 +38,7 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
           error = Tramway::Error.new plugin: :core, method: :image_view, message: "You should mount PhotoUploader to your model. Just add `mount_uploader \#{attribute_name}, PhotoUploader` to your model. #{e.message}"
           raise error.message
         end
-        if filename
-          concat link_to(fa_icon(:download), src_original, class: 'btn btn-success', download: filename)
-        end
+        concat link_to(fa_icon(:download), src_original, class: 'btn btn-success', download: filename) if filename
       end
     end
   end
