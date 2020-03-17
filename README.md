@@ -203,8 +203,10 @@ Tramway::Admin.set_singleton_models Organization, project: :organization # now y
 * models - часто используемые в моделях слова
 * state_machines - локализация состояний
 
-## Contributing
-Contribution directions go here.
+## Contributors
+
+* [Pavel Kalashnikov](https://github.com/kalashnikovisme)
+* [moshinaan](https://github.com/moshinaan)
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
