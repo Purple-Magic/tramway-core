@@ -9,9 +9,9 @@ require 'tramway/core/version'
 Gem::Specification.new do |s|
   s.name        = 'tramway-core'
   s.version     = Tramway::Core::VERSION
-  s.authors     = ['Pavel Kalashnikov']
+  s.authors     = ['Pavel Kalashnikov', 'moshiaan']
   s.email       = ['kalashnikovisme@gmail.com']
-  s.homepage    = 'https://github.com/kalashnikovisme/tramway-core'
+  s.homepage    = 'https://github.com/purple-magic/tramway-core'
   s.summary     = 'Core for all Tramway Rails Engines'
   s.description = 'Core for all Tramway Rails Engines'
   s.license     = 'MIT'
