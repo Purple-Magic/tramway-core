@@ -12,15 +12,7 @@ class Tramway::Core::ExtendableForm
         Object.const_set(name, Class.new(::Tramway::Core::ApplicationForm) do
           properties(*simple_properties.keys) if simple_properties.keys.any?
 
-          define_method 'submit' do |params|
-            model.values ||= {}
-            extended_params = extended(params, simple_properties, more_properties).permit!.to_h
-            call_all_attributes_by params
-            model.values = extended_params.reduce(model.values) do |hash, pair|
-              hash.merge! pair[0] => pair[1]
-            end
-            super(params) && model.errors.empty?
-          end
+          define_submit_method(simple_properties, more_properties)
 
           define_method 'properties' do
             hash = simple_properties.each_with_object({}) do |property, h|

@@ -25,6 +25,8 @@ Style/MixinUsage:
   Exclude:
     - bin/*
     - spec/dummy/bin/*
+Metrics/PerceivedComplexity:
+  Max: 10
 AllCops:
   Include:
     - app/**/*.rb
