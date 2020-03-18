@@ -18,6 +18,7 @@ Style/ClassAndModuleChildren:
   EnforcedStyle: compact
   Exclude:
     - spec/dummy/config/application.rb
+    - lib/tramway/core/version.rb
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 Style/MixinUsage:

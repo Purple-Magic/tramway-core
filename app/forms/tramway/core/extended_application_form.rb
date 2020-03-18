@@ -3,14 +3,14 @@
 class Tramway::Core::ExtendedApplicationForm < Tramway::Core::ApplicationForm
   class << self
     def properties(*args)
-      @@extendable_properties ||= []
-      @@extendable_properties += args
+      @extendable_properties ||= [] # here maybe @@extendable_properties
+      @extendable_properties += args # here maybe @@extendable_properties
       super(*args)
     end
   end
 
   def initialize(model)
-    @@extendable_properties.each do |prop|
+    @extendable_properties.each do |prop| # here maybe @@extendable_properties
       next if model.respond_to? prop
 
       model.class.define_method prop do
