@@ -24,15 +24,11 @@ class Tramway::Core::ExtendableForm
             case property[1][:object].field_type
             when 'file'
               field = property[1][:object]
-              define_file_property_assigment_method property[0], field
+              define_file_property_assignment_method property field
             else
               next unless property[1][:validates].present?
 
-              define_method "#{property[0]}=" do |value|
-                property[1][:validates].each do |pair|
-                  make_validates property[0], pair, value
-                end
-              end
+              define_assignment_method property
             end
           end
 
