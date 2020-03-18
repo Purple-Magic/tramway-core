@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Tramway::Core::ExtendableForms::Submit::ClassHelpers
+module Tramway::Core::ExtendableFormsHelpers::Submit::ClassHelpers
   def define_submit_method(simple_properties, more_properties)
     define_method 'submit' do |params|
       model.values ||= {}

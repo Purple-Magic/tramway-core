@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Tramway::Core::ExtendableForms::Validators
+module Tramway::Core::ExtendableFormsHelpers::Validators
   def make_validates(property_name, validation, value)
     case validation[0].to_s
     when 'presence'

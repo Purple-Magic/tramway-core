@@ -1,4 +1,6 @@
-module Tramway::Core::ExtendableForms::IgnoredPropertiesHelper
+# frozen_string_literal: true
+
+module Tramway::Core::ExtendableFormsHelpers::IgnoredPropertiesHelper
   def define_ignored_properties_method
     define_method :jsonb_ignored_properties do |properties|
       properties.map do |property|

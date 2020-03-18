@@ -1,4 +1,6 @@
-module Tramway::Core::ExtendableForms::MorePropertiesHelper
+# frozen_string_literal: true
+
+module Tramway::Core::ExtendableFormsHelpers::MorePropertiesHelper
   def define_property_method(property_name)
     define_method property_name do
       model.values[property_name] if model.values

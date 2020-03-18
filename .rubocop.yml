@@ -4,6 +4,7 @@ Metrics/MethodLength:
   Max: 12
   Exclude:
     - spec/dummy/db/migrate/*.rb
+    - app/forms/tramway/core/extendable_forms_helpers/class_builder.rb
 Metrics/LineLength:
   Max: 120
 Metrics/BlockLength:
@@ -14,6 +15,7 @@ Metrics/AbcSize:
   Max: 18
   Exclude:
     - spec/dummy/db/migrate/*.rb
+    - app/forms/tramway/core/extendable_forms_helpers/class_builder.rb
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
   Exclude:

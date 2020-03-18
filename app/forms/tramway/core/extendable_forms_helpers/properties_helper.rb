@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Tramway::Core::ExtendableForms::PropertiesHelper
+module Tramway::Core::ExtendableFormsHelpers::PropertiesHelper
   def define_properties_method(simple_properties, more_properties)
     define_method 'properties' do
       hash = simple_properties.each_with_object({}) do |property, h|
