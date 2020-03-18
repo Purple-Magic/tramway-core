@@ -10,7 +10,10 @@ module Tramway
           raise "No such file #{name}. You should create file in the `lib/#{name}.rb` or elsewhere you want"
         end
         unless ::Tramway::Collection.descendants.map(&:to_s).include?(name.camelize)
-          raise "There no such collection named #{name.camelize}. Please create class with self method `list` and extended of `Tramway::Collection`. You should reload your server after creating this collection."
+          ::Tramway::Error.raise_error(
+            :tramway, :collections, :helper, :collection_list_by, :there_no_such_collection,
+            name_camelize: name.camelize
+          )
         end
 
         name.camelize.constantize.list

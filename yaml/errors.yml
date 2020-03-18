@@ -1,0 +1,5 @@
+tramway:
+  collections:
+    helper:
+      collection_list_by:
+        there_no_such_collection: "There no such collection named %{name_camelize}. Please create class with self method `list` and extended of `Tramway::Collection`. You should reload your server after creating this collection."
