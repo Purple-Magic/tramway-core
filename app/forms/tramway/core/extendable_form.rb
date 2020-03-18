@@ -3,6 +3,7 @@
 class Tramway::Core::ExtendableForm
   class << self
     include Tramway::Core::ExtendableForms::Validators
+    include Tramway::Core::ExtendableForms::SubmitHelpers
 
     def new(name, simple_properties: {}, **more_properties)
       if Object.const_defined? name
@@ -13,12 +14,9 @@ class Tramway::Core::ExtendableForm
 
           define_method 'submit' do |params|
             model.values ||= {}
-            extended_params = params.except(*simple_properties.keys).except(*jsonb_ignored_properties(more_properties))
-            params.each do |key, value|
-              method_name = "#{key}="
-              send method_name, value if respond_to?(method_name)
-            end
-            model.values = extended_params.permit!.to_h.reduce(model.values) do |hash, pair|
+            extended_params = extended(params, simple_properties, more_properties).permit!.to_h
+            call_all_attributes_by params
+            model.values = extended_params.reduce(model.values) do |hash, pair|
               hash.merge! pair[0] => pair[1]
             end
             super(params) && model.errors.empty?
@@ -44,7 +42,9 @@ class Tramway::Core::ExtendableForm
             when 'file'
               field = property[1][:object]
               define_method "#{property[0]}=" do |value|
-                file_instance = property[1][:association_model].find_or_create_by "#{model.class.name.underscore}_id" => model.id, "#{field.class.name.underscore}_id" => field.id
+                file_instance = property[1][:association_model].find_or_create_by(
+                  "#{model.class.name.underscore}_id" => model.id, "#{field.class.name.underscore}_id" => field.id
+                )
                 file_instance.file = value
                 file_instance.save!
               end
