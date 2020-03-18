@@ -14,6 +14,7 @@ class Tramway::Core::ExtendableForm
           include Tramway::Core::ExtendableForms::Validators
           extend Tramway::Core::ExtendableForms::PropertiesHelper
           extend Tramway::Core::ExtendableForms::MorePropertiesHelper
+          extend Tramway::Core::ExtendableForms::IgnoredPropertiesHelper
 
           define_submit_method simple_properties, more_properties
           define_properties_method simple_properties, more_properties
@@ -31,12 +32,7 @@ class Tramway::Core::ExtendableForm
               define_assignment_method property
             end
           end
-
-          define_method :jsonb_ignored_properties do |properties|
-            properties.map do |property|
-              property[0].to_s if property[1][:object].field_type == 'file'
-            end.compact
-          end
+          define_ignored_properties_method
         end)
       end
     end
