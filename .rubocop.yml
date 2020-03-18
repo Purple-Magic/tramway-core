@@ -27,6 +27,9 @@ Style/MixinUsage:
     - spec/dummy/bin/*
 Metrics/PerceivedComplexity:
   Max: 10
+Style/ClassVars:
+  Exclude:
+    - app/forms/tramway/core/extended_application_form.rb
 AllCops:
   Include:
     - app/**/*.rb

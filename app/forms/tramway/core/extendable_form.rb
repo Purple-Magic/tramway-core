@@ -2,8 +2,6 @@
 
 class Tramway::Core::ExtendableForm
   class << self
-    include Tramway::Core::ExtendableForms::Validators
-    include Tramway::Core::ExtendableForms::SubmitHelpers
 
     def new(name, simple_properties: {}, **more_properties)
       if Object.const_defined? name
@@ -11,8 +9,11 @@ class Tramway::Core::ExtendableForm
       else
         Object.const_set(name, Class.new(::Tramway::Core::ApplicationForm) do
           properties(*simple_properties.keys) if simple_properties.keys.any?
+          
+          extend Tramway::Core::ExtendableForms::SubmitHelpers
+          include Tramway::Core::ExtendableForms::Validators
 
-          define_submit_method(simple_properties, more_properties)
+          define_submit_method simple_properties, more_properties
 
           define_method 'properties' do
             hash = simple_properties.each_with_object({}) do |property, h|
@@ -43,9 +44,9 @@ class Tramway::Core::ExtendableForm
             else
               next unless property[1][:validates].present?
 
-              define_method "#{property[0]}=" do |_value|
+              define_method "#{property[0]}=" do |value|
                 property[1][:validates].each do |pair|
-                  make_validates property[0], pair
+                  make_validates property[0], pair, value
                 end
               end
             end
