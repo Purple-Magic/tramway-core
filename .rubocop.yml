@@ -32,6 +32,7 @@ Metrics/PerceivedComplexity:
 Style/ClassVars:
   Exclude:
     - app/forms/tramway/core/extended_application_form.rb
+    - app/forms/tramway/core/application_form.rb
 AllCops:
   Include:
     - app/**/*.rb

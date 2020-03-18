@@ -7,3 +7,8 @@ tramway:
     title_helper:
       title:
         you_should_set_tramway_core_application: "You should set Tramway::Core::Application class using `::Tramway::Core.initialize_application model_class: #{model_class_name}` in config/initializers/tramway.rb OR maybe you don't have any records of application model"
+    application_form:
+      validates:
+        you_need_to_set_model_class: 'You need to set `model_class` name while using validations. Just write `self.model_class = YOUR_MODEL_NAME` in the class area.'
+      submit:
+        looks_like_you_have_method: "Looks like you have method `%{method_name}` in %{model_class}. You should rename it or rename property in %{class_name}")
