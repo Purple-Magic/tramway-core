@@ -1,5 +1,9 @@
 Documentation:
   Enabled: false
+Metrics/MethodLength:
+  Max: 12
+  Exclude:
+    - spec/dummy/db/migrate/*.rb
 Metrics/LineLength:
   Max: 120
 Metrics/BlockLength:
@@ -8,15 +12,18 @@ Metrics/BlockLength:
     - spec/
 Metrics/AbcSize:
   Max: 18
+  Exclude:
+    - spec/dummy/db/migrate/*.rb
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
   Exclude:
-    - config/application.rb
+    - spec/dummy/config/application.rb
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 Style/MixinUsage:
   Exclude:
     - bin/*
+    - spec/dummy/bin/*
 AllCops:
   Include:
     - app/**/*.rb
@@ -26,4 +33,5 @@ AllCops:
     - spec/**/*.rb
     - Gemfile
     - Rakefile
+    - spec/dummy/Rakefile
   TargetRubyVersion: 2.7
