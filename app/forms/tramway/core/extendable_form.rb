@@ -24,13 +24,7 @@ class Tramway::Core::ExtendableForm
             case property[1][:object].field_type
             when 'file'
               field = property[1][:object]
-              define_method "#{property[0]}=" do |value|
-                file_instance = property[1][:association_model].find_or_create_by(
-                  "#{model.class.name.underscore}_id" => model.id, "#{field.class.name.underscore}_id" => field.id
-                )
-                file_instance.file = value
-                file_instance.save!
-              end
+              define_file_property_assigment_method property[0], field
             else
               next unless property[1][:validates].present?
 
