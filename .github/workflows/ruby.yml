@@ -2,6 +2,11 @@ name: Ruby
 
 on: [push]
 
+postgres:
+  image: postgres:latest
+  ports:
+  - 5432:5432
+
 jobs:
   build:
     runs-on: ubuntu-latest
