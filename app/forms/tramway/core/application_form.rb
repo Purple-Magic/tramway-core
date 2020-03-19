@@ -54,7 +54,7 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
 
         if options&.dig(:polymorphic)
           hash.merge! association => @@model_class.send("#{association}_type").values
-        elsif options.present?
+        elsif options
           hash.merge!(association => (options[:class_name] || association.to_s.camelize).constantize)
         end
         hash

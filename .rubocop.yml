@@ -33,6 +33,10 @@ Style/ClassVars:
   Exclude:
     - app/forms/tramway/core/extended_application_form.rb
     - app/forms/tramway/core/application_form.rb
+    - app/decorators/tramway/core/associations/class_helper.rb
+Naming/MethodParameterName:
+  Exclude:
+    - app/decorators/tramway/core/associations/class_helper.rb
 AllCops:
   Include:
     - app/**/*.rb

@@ -6,8 +6,11 @@ module Tramway::Core::Associations::ObjectHelper
       object.send(association.name).class
     else
       unless association.options[:class_name]
-        error = Tramway::Error.new(plugin: :core, method: :decorate_association, message: "Please, specify `#{association.name}` association class_name in #{object.class} model. For example: `has_many :#{association.name}, class_name: '#{association.name.to_s.singularize.camelize}'`")
-        raise error.message
+        Tramway::Error.raise_error(
+          :tramway, :core, :associations, :object_helper, :please_specify_association_name,
+          association_name: association.name, object_class: object.class,
+          association_class_name: association.name.to_s.singularize.camelize
+        )
       end
       association.options[:class_name]
     end

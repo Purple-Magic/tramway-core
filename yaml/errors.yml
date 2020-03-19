@@ -17,3 +17,11 @@ tramway:
         params_should_not_be_nil: "ApplicationForm::Params should not be nil"
       model_class: 
         there_is_not_model_class: "There is not model class name for %{name}. Should be %{model_class_name} or you can use another class to initialize form object or just initialize form with object."
+    concerns:
+      attribute_decorator_helper:
+        you_should_mount_photo_uploader: "You should mount PhotoUploader to your model. Just add `mount_uploader %{attribute_name}, PhotoUploader` to your model. %{message}"
+    associations:
+      object_helper:
+        please_specify_association_name: "Please, specify `%{association_name}` association class_name in %{object_class} model. For example: `has_many :%{association_name}, class_name: '%{association_class_name}'`")
+      class_helper:
+        model_does_not_have_association: "Model %{object_class} does not have association named `%{association_name}`")
