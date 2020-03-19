@@ -19,10 +19,10 @@ class Tramway::Error < RuntimeError
 
   class << self
     def raise_error(*coordinates, **options)
-      @errors ||= YAML.load_file('..', '..', 'yaml', 'errors.yml').with_indifferent_access
+      @errors ||= YAML.load_file("#{Tramway::Core.root}/yaml/errors.yml").with_indifferent_access
       error = @errors.dig(*coordinates)
       options.each do |pair|
-        error.gsub!("%{#{pair[0]}}", pair[1])
+        error.gsub!("%{#{pair[0]}}", pair[1].to_s)
       end
       raise error
     end

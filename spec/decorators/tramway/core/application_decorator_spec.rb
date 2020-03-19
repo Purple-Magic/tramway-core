@@ -97,8 +97,8 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
         test_model = create :test_model
         create_list :another_association_model, 10, test_model_id: test_model.id
         decorated_test_model = TestModelDecorator.decorate test_model
-        expect { decorated_test_model.another_association_models }.to(
-          raise_error(errors.dig(:errors, :application_decorator, :class_check, :should_raise_error))
+        expect { decorated_test_model.another_association_models }.to raise_error(
+          "Please, specify `another_association_models` association class_name in TestModel model. For example: `has_many :another_association_models, class_name: 'AnotherAssociationModel'`"
         )
       end
     end
@@ -127,14 +127,13 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
       it 'returns name' do
         expect { decorated_test_model.name }.to raise_error(
           RuntimeError,
-          errors.dig(:errors, :application_decorator, :object_methods_checks, :returns_name)
+          "Please, implement `title` method in a Tramway::Core::ApplicationDecorator or TestModel"
         )
       end
 
       it 'returns link' do
         expect { decorated_test_model.link }.to(
-          raise_error(errors.dig(:errors, :application_decorator, :object_methods_checks, :returns_link))
-        )
+          raise_error("Method `link` uses `file` attribute of the decorated object. If decorated object doesn't contain `file`, you shouldn't use `link` method."))
       end
 
       it 'returns model' do

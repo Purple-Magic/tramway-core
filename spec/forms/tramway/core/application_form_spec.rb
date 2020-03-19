@@ -19,7 +19,7 @@ RSpec.describe Tramway::Core::ApplicationForm do
       test_model_form = described_class.new test_model
       params = ActionController::Parameters.new test_model: nil
       expect { test_model_form.submit(params[:test_model]) }.to(
-        raise_error(RuntimeError, 'Plugin: core; Method: submit; Message: ApplicationForm::Params should not be nil')
+        raise_error(RuntimeError, 'ApplicationForm::Params should not be nil')
       )
     end
   end

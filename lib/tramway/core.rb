@@ -30,6 +30,10 @@ module Tramway::Core
       end
     end
 
+    def root
+      File.dirname __dir__
+    end
+
     attr_reader :application
   end
 end

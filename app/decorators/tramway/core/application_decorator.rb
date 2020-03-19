@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'tramway/error'
+require 'tramway/helpers/class_name_helpers'
 
 class Tramway::Core::ApplicationDecorator
   include ActionView::Helpers
@@ -9,6 +10,7 @@ class Tramway::Core::ApplicationDecorator
   include ::Tramway::Core::CopyToClipboardHelper
   include ::Tramway::Core::Associations::ObjectHelper
   include ::Tramway::Core::Attributes::ViewHelper
+  include ::Tramway::ClassNameHelpers
 
   def initialize(object)
     @object = object

@@ -15,4 +15,27 @@ module Tramway::Core::Associations::ObjectHelper
       association.options[:class_name]
     end
   end
+
+  def check_association(object, association_name, association)
+    return unless association.nil?
+
+    Tramway::Error.raise_error(
+      :tramway, :core, :associations, :class_helper, :model_does_not_have_association,
+      object_class: object.class, association_name: association_name
+    )
+  end
+
+  def association_type(association)
+    association.class.to_s.split('::').last.sub(/Reflection$/, '').underscore.to_sym
+  end
+
+  def associations_collection(object, association_name, decorator_class_name)
+    object.send(association_name).active.map do |association_object|
+      decorator_class_name.decorate association_object
+    end
+  end
+
+  def add_association_form_class_name(object, association_name)
+    "Admin::#{object.class.to_s.pluralize}::Add#{association_name.to_s.camelize.singularize}Form".constantize
+  end
 end
