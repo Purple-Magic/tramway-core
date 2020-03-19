@@ -29,7 +29,7 @@
 #      with:
 #        github-token: ${{ secrets.GITHUB_TOKEN }}
 name: CI
-on: [pull_request]
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
