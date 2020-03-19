@@ -12,7 +12,7 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
       @@enumerized_attributes = object.class.try :enumerized_attributes
       @@associations ||= []
 
-      self.class.full_class_name_associations.each do |association, class_name|
+      self.class.full_class_name_associations&.each do |association, class_name|
         define_association_method association, class_name
       end
 
@@ -39,7 +39,7 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
 
     def association(property)
       properties property
-      @@associations = (@@associations || []) + [property]
+      @@associations = ((defined?(@@associations) && @@associations) || []) + [property]
     end
 
     def associations(*properties)
@@ -53,10 +53,11 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
         end.first&.options
 
         if options&.dig(:polymorphic)
-          hash.merge association => @@model_class.send("#{association}_type").values
-        else
-          hash.merge(association => (options[:class_name] || association.to_s.camelize).constantize)
+          hash.merge! association => @@model_class.send("#{association}_type").values
+        elsif options.present?
+          hash.merge!(association => (options[:class_name] || association.to_s.camelize).constantize)
         end
+        hash
       end
     end
 
