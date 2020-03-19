@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Tramway::Core::ApplicationForm < ::Reform::Form
+  include Tramway::Core::ApplicationForms::AssociationObjectHelpers
+  include Tramway::Core::ApplicationForms::ConstantObjectActions
+  include Tramway::Core::ApplicationForms::PropertiesObjectHelper
+
   def initialize(object = nil)
     object ||= self.class.model_class.new
     super(object).tap do
@@ -9,22 +13,7 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
       @@associations ||= []
 
       self.class.full_class_name_associations.each do |association, class_name|
-        if class_name.is_a? Array
-          self.class.send(:define_method, "#{association}=") do |value|
-            association_class = value.split('_')[0..-2].join('_').camelize
-            association_class = association_class.constantize if association_class.is_a? String
-            if association_class.nil?
-              raise Tramway::Error.new(plugin: :core, method: :initialize, message: 'Polymorphic association class is nil. Maybe, you should write `assocation #{association_name}` after `properties #{association_name}_id, #{association_name}_type`')
-            else
-              super association_class.find value.split('_')[-1]
-              send "#{association}_type=", association_class.to_s
-            end
-          end
-        else
-          self.class.send(:define_method, "#{association}=") do |value|
-            super class_name.find value
-          end
-        end
+        define_association_method association, class_name
       end
 
       delegating object
@@ -33,23 +22,9 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
 
   def submit(params)
     if params
-      if validate params
-        begin
-          save
-        rescue StandardError => e
-          Tramway::Error.raise_error(
-            :tramway, :core, :application_form, :submit, :looks_like_you_have_method,
-            method_name: e.name.to_s.gsub('=', ''), model_class: @@model_class, class_name: self.class
-          )
-        end
-      else
-        @@associations.each do |association|
-          model.send("#{association}=", send(association)) if errors.details[association] == [{ error: :blank }]
-        end
-      end
+      validate(params) ? save : collecting_associations_errors
     else
-      error = Tramway::Error.new(plugin: :core, method: :submit, message: 'ApplicationForm::Params should not be nil')
-      raise error.message
+      Tramway::Error.raise_error(:tramway, :core, :application_form, :submit, :params_should_not_be_nil)
     end
   end
 
@@ -57,61 +32,18 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
     @@model_class.model_name
   end
 
-  def associations
-    @@associations
-  end
-
-  def form_properties(**args)
-    @form_properties = args
-  end
-
-  def form_properties_additional(**args)
-    @form_properties_additional = args
-  end
-
-  def properties
-    return @form_properties if @form_properties
-
-    yaml_config_file_path = Rails.root.join('app', 'forms', "#{self.class.name.underscore}.yml")
-    if File.exist? yaml_config_file_path
-      @form_properties = YAML.load_file(yaml_config_file_path).deep_symbolize_keys
-      @form_properties.deep_merge! @form_properties_additional if @form_properties_additional
-      @form_properties
-    else
-      []
-    end
-  end
-
-  def build_errors; end
-
-  def delegating(object)
-    methods = %i[to_key errors]
-    methods.each do |method|
-      self.class.send(:define_method, method) do
-        object.send method
-      end
-    end
-  end
-
-  def attributes
-    properties.reduce({}) do |hash, property|
-      hash.merge! property.first => model.values[property.first.to_s]
-    end
-  end
-
   class << self
+    include Tramway::Core::ApplicationForms::ConstantClassActions
+
     delegate :defined_enums, to: :model_class
 
     def association(property)
       properties property
-      @@associations ||= []
-      @@associations << property
+      @@associations = (@@associations || []) + [property]
     end
 
     def associations(*properties)
-      properties.each do |property|
-        association property
-      end
+      properties.each { |property| association property }
     end
 
     def full_class_name_associations
@@ -120,15 +52,11 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
           a.name == association.to_sym
         end.first&.options
 
-        if options
-          if options[:polymorphic]
-            hash.merge! association => @@model_class.send("#{association}_type").values
-          else
-            class_name = options[:class_name] || association.to_s.camelize
-            hash.merge!(association => class_name.constantize)
-          end
+        if options&.dig(:polymorphic)
+          hash.merge association => @@model_class.send("#{association}_type").values
+        else
+          hash.merge(association => (options[:class_name] || association.to_s.camelize).constantize)
         end
-        hash
       end
     end
 
@@ -136,12 +64,12 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
       full_class_name_associations[association_name]
     end
 
-    def enumerized_attributes
-      @@enumerized_attributes
-    end
-
     def reflect_on_association(*args)
       @@model_class.reflect_on_association(*args)
+    end
+
+    def enumerized_attributes
+      @@enumerized_attributes
     end
 
     def model_class
@@ -152,8 +80,8 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
         begin
           @@model_class = model_class_name.constantize
         rescue StandardError
-          error = Tramway::Error.new(plugin: :core, method: :model_class, message: "There is not model class name for #{name}. Should be #{model_class_name} or you can use another class to initialize form object or just initialize form with object.")
-          raise error.message
+          Tramway::Error.raise_error :tramway, :core, :application_form, :model_class, :there_is_not_model_class,
+            name: name, model_class_name: model_class_name
         end
       end
     end
@@ -162,15 +90,26 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
       @@model_class = name
     end
 
-    def validation_group_class
-      ActiveModel
-    end
-
     def validates(attribute, **options)
       if !defined?(@@model_class) || @@model_class.nil?
         Tramway::Error.raise_error(:tramway, :core, :application_form, :validates, :you_need_to_set_model_class)
       end
       @@model_class.validates attribute, **options
     end
+  end
+
+  private
+
+  def collecting_associations_errors
+    @@associations.each do |association|
+      model.send("#{association}=", send(association)) if errors.details[association] == [{ error: :blank }]
+    end
+  end
+
+  def save
+    super
+  rescue StandardError => e
+    Tramway::Error.raise_error :tramway, :core, :application_form, :submit, :looks_like_you_have_method,
+      method_name: e.name.to_s.gsub('=', ''), model_class: @@model_class, class_name: self.class
   end
 end
