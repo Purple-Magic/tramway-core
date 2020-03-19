@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Tramway::Core::ApplicationDecorator do
+  let(:errors) { YAML.load_file(Rails.root.join('..', 'yaml', 'errors.yml')).with_indifferent_access }
   it 'defined decorator class' do
     expect(defined?(described_class)).to be_truthy
   end
@@ -23,6 +24,9 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
     it 'class should have only this methods list' do
       expect(class_methods.should =~ %i[
         decorate_association
+        decorate_associations
+        define_main_association_method
+        delegate_attributes
         list_attributes
         decorate
         model_class
@@ -93,7 +97,9 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
         test_model = create :test_model
         create_list :another_association_model, 10, test_model_id: test_model.id
         decorated_test_model = TestModelDecorator.decorate test_model
-        expect { decorated_test_model.another_association_models }.to raise_error("Plugin: core; Method: decorate_association; Message: Please, specify `another_association_models` association class_name in TestModel model. For example: `has_many :another_association_models, class_name: 'AnotherAssociationModel'`")
+        expect { decorated_test_model.another_association_models }.to raise_error(
+          "Please, specify `another_association_models` association class_name in TestModel model. For example: `has_many :another_association_models, class_name: 'AnotherAssociationModel'`"
+        )
       end
     end
   end
@@ -121,12 +127,14 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
       it 'returns name' do
         expect { decorated_test_model.name }.to raise_error(
           RuntimeError,
-          'Plugin: core; Method: title; Message: Please, implement `title` method in a Tramway::Core::ApplicationDecorator or TestModel'
+          'Please, implement `title` method in a Tramway::Core::ApplicationDecorator or TestModel'
         )
       end
 
       it 'returns link' do
-        expect { decorated_test_model.link }.to raise_error("Plugin: core; Method: link; Message: Method `link` uses `file` attribute of the decorated object. If decorated object doesn't contain `file`, you shouldn't use `link` method.")
+        expect { decorated_test_model.link }.to(
+          raise_error("Method `link` uses `file` attribute of the decorated object. If decorated object doesn't contain `file`, you shouldn't use `link` method.")
+        )
       end
 
       it 'returns model' do
@@ -134,19 +142,15 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
       end
 
       it 'returns associations' do
-        expect(decorated_test_model.associations(:has_many).map(&:name).should =~ %i[association_models another_association_models]).to be_truthy
+        expect(decorated_test_model.associations(:has_many).map(&:name).should =~
+               %i[association_models another_association_models]).to be_truthy
         expect(decorated_test_model.associations(:belongs_to).map(&:name).should =~ []).to be_truthy
         expect(decorated_test_model.associations(:has_and_belongs_to_many).map(&:name).should =~ []).to be_truthy
         expect(decorated_test_model.associations(:has_one).map(&:name).should =~ []).to be_truthy
       end
 
       it 'returns attributes' do
-        date_format = case ENV['LOCALE']
-                      when 'ru'
-                        '%d.%m.%Y %H:%M'
-                      when 'en'
-                        '%m/%d/%Y %H:%M'
-                      end
+        date_format = '%d.%m.%Y %H:%M'
         expect(decorated_test_model.attributes).to eq({
           text: test_model.text,
           created_at: test_model.created_at.strftime(date_format),

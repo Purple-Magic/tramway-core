@@ -13,37 +13,58 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
     object.send "human_#{attribute_name}_name"
   end
 
+  BASE64_REGEXP = %r{^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|
+                                            (?:[a-zA-Z0-9+/]{2}==)|(?:[a-zA-Z0-9+/]{1}===))$}x.freeze
+
   def image_view(original, thumb: nil, filename: nil)
-    if original.present?
-      thumb ||= original.is_a?(CarrierWave::Uploader::Base) ? original.small : nil
-      filename ||= original.is_a?(CarrierWave::Uploader::Base) ? original.path&.split('/')&.last : nil
-      src_thumb = if thumb&.is_a?(CarrierWave::Uploader::Base)
-                    thumb.url
-                  elsif thumb&.match(%r{^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|(?:[a-zA-Z0-9+/]{2}==)|(?:[a-zA-Z0-9+/]{1}===))$})
-                    "data:image/jpeg;base64,#{thumb}"
-                  else
-                    thumb
-                  end
-      src_original = if original.is_a?(CarrierWave::Uploader::Base)
-                       original.url
-                     elsif original.match(%r{^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|(?:[a-zA-Z0-9+/]{2}==)|(?:[a-zA-Z0-9+/]{1}===))$})
-                       "data:image/jpeg;base64,#{original}"
-                     else
-                       original
-                     end
-      content_tag(:div) do
-        begin
-          concat image_tag src_thumb || src_original
-        rescue NoMethodError => e
-          error = Tramway::Error.new plugin: :core, method: :image_view, message: "You should mount PhotoUploader to your model. Just add `mount_uploader \#{attribute_name}, PhotoUploader` to your model. #{e.message}"
-          raise error.message
-        end
-        concat link_to(fa_icon(:download), src_original, class: 'btn btn-success', download: filename) if filename
-      end
+    return unless original.present?
+
+    filename ||= build_filename(original)
+    content_tag(:div) do
+      build_div_content src_original(original), src_thumb(original, thumb), filename || build_filename(original)
     end
   end
 
   def enumerize_view(value)
     value.text
+  end
+
+  private
+
+  def src_thumb(original, thumb)
+    thumb ||= original.is_a?(CarrierWave::Uploader::Base) ? original.small : nil
+    if thumb&.is_a?(CarrierWave::Uploader::Base)
+      thumb.url
+    elsif thumb&.match(BASE64_REGEXP)
+      "data:image/jpeg;base64,#{thumb}"
+    else
+      thumb
+    end
+  end
+
+  def src_original(original)
+    if original.is_a?(CarrierWave::Uploader::Base)
+      original.url
+    elsif original.match(BASE64_REGEXP)
+      "data:image/jpeg;base64,#{original}"
+    else
+      original
+    end
+  end
+
+  def build_filename(original)
+    original.is_a?(CarrierWave::Uploader::Base) ? original.path&.split('/')&.last : nil
+  end
+
+  def build_div_content(original, thumb, filename)
+    begin
+      concat image_tag src_thumb(original, thumb) || src_original(original)
+    rescue NoMethodError => e
+      Tramway::Error.raise_error(
+        :tramway, :core, :concerns, :attributes_decorator_helper, :you_should_mount_photo_uploader,
+        message: e.message, attribute_name: attribute_name
+      )
+    end
+    concat link_to(fa_icon(:download), src_original(original), class: 'btn btn-success', download: filename) if filename
   end
 end

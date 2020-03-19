@@ -16,7 +16,7 @@ module Tramway::Core::Associations::ClassHelper
     end
 
     define_method "add_#{association_name}_form" do
-      "Admin::#{object.class.to_s.pluralize}::Add#{association_name.to_s.camelize.singularize}Form".constantize.new object
+      add_association_form_class_name(object, association_name).new object
     end
   end
 
@@ -25,22 +25,16 @@ module Tramway::Core::Associations::ClassHelper
       decorate_association association_name
     end
   end
+
   def define_main_association_method(association_name, decorator)
     define_method association_name do
       association = object.class.reflect_on_association(association_name)
-      if association.nil?
-        error = Tramway::Error.new(plugin: :core, method: :decorate_association, message: "Model #{object.class} does not have association named `#{association_name}`")
-        raise error.message
+      check_association object, association_name, association
+      decorator_class_name = decorator || decorator_class_name(class_name(association))
+      if association_type(association).in? %i[has_many has_and_belongs_to_many]
+        return associations_collection(object, association_name, decorator_class_name)
       end
-      decorator_class_name = decorator || "#{class_name(association).to_s.singularize}Decorator".constantize
-      if association.class.in? [ActiveRecord::Reflection::HasManyReflection, ActiveRecord::Reflection::HasAndBelongsToManyReflection]
-        return object.send(association_name).active.map do |association_object|
-          decorator_class_name.decorate association_object
-        end
-      end
-      if association.class == ActiveRecord::Reflection::BelongsToReflection
-        return decorator_class_name.decorate object.send association_name
-      end
+      return decorator_class_name.decorate object.send association_name if association_type(association) == :belongs_to
     end
   end
 end

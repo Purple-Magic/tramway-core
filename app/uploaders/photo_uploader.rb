@@ -44,14 +44,14 @@ class PhotoUploader < ApplicationUploader
   before :cache, :capture_size
 
   def capture_size(file)
-    if version_name.blank?
-      if file.path.nil?
-        img = ::MiniMagick::Image.read(file.file)
-        @width = img[:width]
-        @height = img[:height]
-      else
-        @width, @height = `identify -format "%wx %h" #{file.path}`.split(/x/).map(&:to_i)
-      end
+    return unless version_name.blank?
+
+    if file.path.nil?
+      img = ::MiniMagick::Image.read(file.file)
+      @width = img[:width]
+      @height = img[:height]
+    else
+      @width, @height = `identify -format "%wx %h" #{file.path}`.split(/x/).map(&:to_i)
     end
   end
 end

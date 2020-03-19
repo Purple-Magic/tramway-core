@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-include ActionDispatch::TestProcess
+# include ActionDispatch::TestProcess
 
 FactoryBot.define do
   sequence :string do |n|

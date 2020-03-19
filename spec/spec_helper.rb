@@ -5,44 +5,24 @@ require File.expand_path('dummy/config/environment', __dir__)
 require 'pry'
 
 def bad_ass_monkey_patching_methods(source:)
-  methods = {
-    active_support: %i[
-      debug_missing_translation=
-      debug_missing_translation
-    ],
-    action_view: {
-      helpers: %i[
-        sanitized_protocol_separator
-        sanitized_protocol_separator=
-        sanitized_uri_attributes
-        sanitized_uri_attributes=
-        sanitized_bad_tags
-        sanitized_bad_tags=
-        sanitized_allowed_css_properties
-        sanitized_allowed_css_properties=
-        sanitized_allowed_css_keywords
-        sanitized_allowed_css_keywords=
-        sanitized_shorthand_css_properties
-        sanitized_shorthand_css_properties=
-        sanitized_allowed_protocols
-        sanitized_allowed_protocols=
-        full_sanitizer=
-        link_sanitizer=
-        white_list_sanitizer=
-        full_sanitizer
-        link_sanitizer
-        sanitizer_vendor
-        sanitized_allowed_tags
-        white_list_sanitizer
-        sanitized_allowed_attributes
-        sanitized_allowed_tags=
-        sanitized_allowed_attributes=
-        safe_list_sanitizer
-        safe_list_sanitizer=
-        _url_for_modules
-      ]
-    }
-  }
+  methods = deep_symbolize_values(
+    YAML.load_file(Rails.root.join('..', 'yaml', 'methods.yml')).deep_symbolize_keys[:methods]
+  )
   source = [source] unless source.is_a? Array
   methods.dig(*source)
+end
+
+def deep_symbolize_values(hash)
+  hash.reduce({}) do |symbol_hash, pair|
+    symbol_hash.merge! pair[0] => case pair[1].class.to_s
+                                  when 'String'
+                                    pair[1].to_sym
+                                  when 'Hash'
+                                    deep_symbolize_values(pair[1])
+                                  when 'Array'
+                                    pair[1].map(&:to_sym)
+                                  else
+                                    pair[1]
+                                  end
+  end
 end
