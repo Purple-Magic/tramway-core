@@ -127,13 +127,14 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
       it 'returns name' do
         expect { decorated_test_model.name }.to raise_error(
           RuntimeError,
-          "Please, implement `title` method in a Tramway::Core::ApplicationDecorator or TestModel"
+          'Please, implement `title` method in a Tramway::Core::ApplicationDecorator or TestModel'
         )
       end
 
       it 'returns link' do
         expect { decorated_test_model.link }.to(
-          raise_error("Method `link` uses `file` attribute of the decorated object. If decorated object doesn't contain `file`, you shouldn't use `link` method."))
+          raise_error("Method `link` uses `file` attribute of the decorated object. If decorated object doesn't contain `file`, you shouldn't use `link` method.")
+        )
       end
 
       it 'returns model' do
