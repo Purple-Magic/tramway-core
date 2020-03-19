@@ -7,6 +7,12 @@ Metrics/MethodLength:
     - app/forms/tramway/core/extendable_forms_helpers/class_builder.rb
 Metrics/LineLength:
   Max: 120
+  Exclude:
+    - spec/decorators/tramway/core/application_decorator_spec.rb
+Metrics/BlockLength:
+  Enabled: false
+  Include:
+    - spec/
 Metrics/AbcSize:
   Max: 18
   Exclude:
