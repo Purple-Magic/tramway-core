@@ -31,7 +31,6 @@ module Tramway::Core::Associations::ClassHelper
       association = object.class.reflect_on_association(association_name)
       check_association object, association_name, association
       decorator_class_name = decorator || decorator_class_name(class_name(association))
-      # "#{class_name(association).to_s.singularize}Decorator".constantize
       if association_type(association).in? %i[has_many has_and_belongs_to_many]
         return associations_collection(object, association_name, decorator_class_name)
       end
