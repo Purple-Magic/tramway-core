@@ -8,6 +8,7 @@ class Tramway::Core::ApplicationDecorator
   include ::FontAwesome5::Rails::IconHelper
   include ::Tramway::Core::CopyToClipboardHelper
   include ::Tramway::Core::Associations::ObjectHelper
+  include ::Tramway::Core::Attributes::ViewHelper
 
   def initialize(object)
     @object = object
@@ -18,8 +19,10 @@ class Tramway::Core::ApplicationDecorator
   end
 
   def title
-    error = Tramway::Error.new(plugin: :core, method: :title, message: "Please, implement `title` method in a #{self.class} or #{object.class}")
-    raise error.message
+    Tramway::Error.raise_error(
+      :tramway, :core, :application_decorator, :title, :please_implement_title,
+      class_name: self.class, object_class: object.class
+    )
   end
 
   delegate :id, to: :object
@@ -69,12 +72,7 @@ class Tramway::Core::ApplicationDecorator
     if object.try :file
       object.file.url
     else
-      error = Tramway::Error.new(
-        plugin: :core,
-        method: :link,
-        message: "Method `link` uses `file` attribute of the decorated object. If decorated object doesn't contain `file`, you shouldn't use `link` method."
-      )
-      raise error.message
+      Tramway::Error.raise_error :tramway, :core, :application_decorator, :link, :method_link_uses_file_attribute
     end
   end
 
@@ -97,25 +95,12 @@ class Tramway::Core::ApplicationDecorator
   def attributes
     object.attributes.reduce({}) do |hash, attribute|
       if attribute[0].in? RESERVED_WORDS
-        error = Tramway::Error.new(
-          plugin: :core,
-          method: :attributes,
-          message: "Method `#{attribute[0]}` is reserved word. Please, create or delegate method in #{self.class.name} with another name."
+        Tramway::Error.raise_error(
+          :tramway, :core, :application_decorator, :attributes, :method_is_reserved_word,
+          attribute_name: attribute[0], class_name: self.class.name
         )
-        raise error.message
       end
-      value = try(attribute[0]) ? send(attribute[0]) : object.send(attribute[0])
-      if attribute[0].to_s.in? object.class.state_machines.keys.map(&:to_s)
-        hash.merge! attribute[0] => state_machine_view(object, attribute[0])
-      elsif value.class.in? [ActiveSupport::TimeWithZone, DateTime, Time]
-        hash.merge! attribute[0] => datetime_view(attribute[1])
-      elsif value.class.superclass == ApplicationUploader
-        hash.merge! attribute[0] => image_view(object.send(attribute[0]))
-      elsif value.is_a? Enumerize::Value
-        hash.merge! attribute[0] => enumerize_view(value)
-      else
-        hash.merge! attribute[0] => value
-      end
+      hash.merge! attribute[0] => build_viewable_value(object, attribute)
     end
   end
 

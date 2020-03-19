@@ -25,3 +25,11 @@ tramway:
         please_specify_association_name: "Please, specify `%{association_name}` association class_name in %{object_class} model. For example: `has_many :%{association_name}, class_name: '%{association_class_name}'`")
       class_helper:
         model_does_not_have_association: "Model %{object_class} does not have association named `%{association_name}`")
+    application_decorator:
+      attributes:
+        method_is_reserved_word: "Method `%{attribute_name}` is reserved word. Please, create or delegate method in %{class_name} with another name."
+      title:
+        please_implement_title: "Please, implement `title` method in a %{class_name} or %{object_class}"
+      link:
+        method_link_uses_file_attribute: "Method `link` uses `file` attribute of the decorated object. If decorated object doesn't contain `file`, you shouldn't use `link` method."
+
