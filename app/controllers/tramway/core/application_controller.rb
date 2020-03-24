@@ -11,4 +11,8 @@ class Tramway::Core::ApplicationController < ActionController::Base
   def load_extensions
     ::Tramway::Extensions.load if defined? ::Tramway::Extensions
   end
+
+  def model_class
+    params[:model].constantize
+  end
 end

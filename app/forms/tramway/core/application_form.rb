@@ -5,6 +5,8 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
   include Tramway::Core::ApplicationForms::ConstantObjectActions
   include Tramway::Core::ApplicationForms::PropertiesObjectHelper
 
+  attr_accessor :submit_message
+
   def initialize(object = nil)
     object ||= self.class.model_class.new
     super(object).tap do
@@ -34,6 +36,14 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
 
   def associations
     @@associations
+  end
+
+  def to_model
+    self
+  end
+
+  def persisted?
+    model.id.nil?
   end
 
   class << self
