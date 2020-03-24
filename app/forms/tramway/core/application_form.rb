@@ -32,6 +32,10 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
     @@model_class.model_name
   end
 
+  def associations
+    @@associations
+  end
+
   class << self
     include Tramway::Core::ApplicationForms::ConstantClassActions
 
