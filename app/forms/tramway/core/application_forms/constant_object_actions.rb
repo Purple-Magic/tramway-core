@@ -8,6 +8,13 @@ module Tramway::Core::ApplicationForms::ConstantObjectActions
   def build_errors; end
 
   def attributes
-    properties.reduce({}) { |hash, property| hash.merge! property.first => model.values[property.first.to_s] }
+    properties.reduce({}) do |hash, property|
+      value = if model.respond_to? :values
+                model.values[property.first.to_s]
+              else
+                model.send(property.first.to_s)
+              end
+      hash.merge! property.first => value
+    end
   end
 end
