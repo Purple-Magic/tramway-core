@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 module Tramway::Core::ApplicationForms::AssociationObjectHelpers
-  def associations
-    @@associations
-  end
-
   def define_association_method(association, class_name)
     if class_name.is_a? Array
       define_polymorphic_association association, class_name
