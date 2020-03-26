@@ -1,5 +1,4 @@
 - model_class = defined?(record) ? record.model : model_class
-- value = defined?(value) ? value : value_from_params(model_class: model_class, property: property, type: type)
 - form_object = defined?(record) ? record : instance_variable_get("@#{object}_form")
 - input_params = { property: property, object: object, form_object: form_object, value: value }
 - if !type.class.in?([ Symbol, String ]) && type[:input_options]

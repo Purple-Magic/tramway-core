@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    tramway-core (1.17.2.5)
+    tramway-core (1.17.3)
       audited (>= 4.8.0)
       bootstrap (>= 4.1.2)
       carrierwave
