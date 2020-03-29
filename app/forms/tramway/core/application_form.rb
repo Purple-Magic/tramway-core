@@ -123,8 +123,10 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
 
   def save
     super
+  rescue ArgumentError => e
+    Tramway::Error.raise_error :tramway, :core, :application_form, :save, :argument_error, message: e.message
   rescue StandardError => e
-    Tramway::Error.raise_error :tramway, :core, :application_form, :submit, :looks_like_you_have_method,
+    Tramway::Error.raise_error :tramway, :core, :application_form, :save, :looks_like_you_have_method,
       method_name: e.name.to_s.gsub('=', ''), model_class: @@model_class, class_name: self.class
   end
 end
