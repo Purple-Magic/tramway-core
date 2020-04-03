@@ -6,6 +6,7 @@ module Tramway::Core::ApplicationForms::AssociationObjectHelpers
       define_polymorphic_association association, class_name
     else
       self.class.send(:define_method, "#{association}=") do |value|
+        model.send "#{association}_id=", value
         super class_name.find value
       end
     end
