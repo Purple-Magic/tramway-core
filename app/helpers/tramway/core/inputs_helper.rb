@@ -18,7 +18,7 @@ module Tramway::Core::InputsHelper
         value: (form_object.send(property) || form_object.model.send("#{property}_id") || value)
       },
       selected: (form_object.model.send("#{property}_id") || value),
-      collection: full_class_name_association.active.map do |obj|
+      collection: full_class_name_association.active.send("#{current_user.role}_scope", current_user.id).map do |obj|
         decorator_class(full_class_name_association).decorate obj
       end.sort_by(&:name)
     }.merge options
@@ -27,7 +27,7 @@ module Tramway::Core::InputsHelper
   def polymorphic_association_params(object:, form_object:, property:, value:, options: {})
     full_class_names = form_object.model.class.send("#{property}_type").values.map &:constantize
     collection = full_class_names.map do |class_name|
-      class_name.active.map do |obj|
+      class_name.active.send("#{current_user.role}_scope", current_user.id).map do |obj|
         decorator_class(class_name).decorate obj
       end
     end.flatten.sort_by { |obj| obj.name.to_s }
