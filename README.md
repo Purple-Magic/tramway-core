@@ -132,7 +132,7 @@ end
 
 ### CopyToClipboardHelper
 
-[app/helpers/tramway/core/copy_to_clipboard_helper.rb](https://github.com/ulmic/tramway-dev/blob/develop/tramway-core/app/helpers/tramway/core/copy_to_clipboard_helper.rb)
+[app/helpers/tramway/core/copy_to_clipboard_helper.rb] (https://github.com/ulmic/tramway-dev/blob/develop/tramway-core/app/helpers/tramway/core/copy_to_clipboard_helper.rb)
 
 #### Install
 
