@@ -4,6 +4,10 @@ tramway:
       collection_list_by:
         there_no_such_collection: "There no such collection named %{name_camelize}. Please create class with self method `list` and extended of `Tramway::Collection`. You should reload your server after creating this collection."
   core:
+    input_helper:
+      association_params:
+        defined_with_property_method: "It seems you've defined association attributes with `property` method. Please, use `association` method. `association :%{property}`"
+        use_polymorphic_association: "It seems you've used `association` input type in the Form. Please, use `polymorphic_association` type. `%{property}: :polymorphic_association`"
     title_helper:
       title:
         you_should_set_tramway_core_application: "You should set Tramway::Core::Application class using `::Tramway::Core.initialize_application model_class: #{model_class_name}` in config/initializers/tramway.rb OR maybe you don't have any records of application model"
@@ -34,4 +38,3 @@ tramway:
         please_implement_title: "Please, implement `title` method in a %{class_name} or %{object_class}"
       link:
         method_link_uses_file_attribute: "Method `link` uses `file` attribute of the decorated object. If decorated object doesn't contain `file`, you shouldn't use `link` method."
-
