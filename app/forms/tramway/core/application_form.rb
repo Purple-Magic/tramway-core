@@ -4,6 +4,7 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
   include Tramway::Core::ApplicationForms::AssociationObjectHelpers
   include Tramway::Core::ApplicationForms::ConstantObjectActions
   include Tramway::Core::ApplicationForms::PropertiesObjectHelper
+  include Tramway::Core::ApplicationForms::ObjectHelpers
 
   attr_accessor :submit_message
 
@@ -36,14 +37,6 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
 
   def associations
     @@associations
-  end
-
-  def to_model
-    self
-  end
-
-  def persisted?
-    model.id.nil?
   end
 
   class << self
