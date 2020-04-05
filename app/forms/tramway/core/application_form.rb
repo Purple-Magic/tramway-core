@@ -96,7 +96,7 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
           @@model_class = model_class_name.constantize
         rescue StandardError
           Tramway::Error.raise_error :tramway, :core, :application_form, :model_class, :there_is_not_model_class,
-                                     name: name, model_class_name: model_class_name
+            name: name, model_class_name: model_class_name
         end
       end
     end
@@ -127,6 +127,6 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
     Tramway::Error.raise_error :tramway, :core, :application_form, :save, :argument_error, message: e.message
   rescue StandardError => e
     Tramway::Error.raise_error :tramway, :core, :application_form, :save, :looks_like_you_have_method,
-                               method_name: e.name.to_s.gsub('=', ''), model_class: @@model_class, class_name: self.class
+      method_name: e.name.to_s.gsub('=', ''), model_class: @@model_class, class_name: self.class
   end
 end
