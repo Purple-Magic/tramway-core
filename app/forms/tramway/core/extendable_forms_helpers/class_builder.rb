@@ -22,7 +22,7 @@ module Tramway::Core::ExtendableFormsHelpers::ClassBuilder
         case property[1][:object].field_type
         when 'file'
           field = property[1][:object]
-          define_file_property_assignment_method property field
+          define_file_property_assignment_method property, field
         else
           next unless property[1][:validates].present?
 

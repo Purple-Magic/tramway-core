@@ -18,7 +18,7 @@ module Tramway::Core::ApplicationForms::AssociationObjectHelpers
       association_class = association_class.constantize if association_class.is_a? String
       if association_class.nil?
         Tramway::Error.raise_error :tramway, :core, :application_form, :initialize, :polymorphic_class_is_nil,
-                                   association_name: association
+          association_name: association
       else
         super association_class.find value.split('_')[-1]
         send "#{association}_type=", association_class.to_s

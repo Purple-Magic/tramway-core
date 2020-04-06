@@ -203,10 +203,36 @@ Tramway::Admin.set_singleton_models Organization, project: :organization # now y
 * models - часто используемые в моделях слова
 * state_machines - локализация состояний
 
-## Contributors
+## Contribution
+
+### Contributors
 
 * [Pavel Kalashnikov](https://github.com/kalashnikovisme)
 * [moshinaan](https://github.com/moshinaan)
+
+### Workflow
+
+#### If you don't have access to push gem to rubygems then
+
+Just create PR to develop branch
+
+#### If you have access to push gem to rubygems then
+
+* Create PR to develop branch
+* After merging PR you should create new release via git-flow this way
+
+```shell
+git release start (version which you upgraded in lib/tramway-core/version.rb file)
+git release finish (version which you upgraded in lib/tramway-core/version.rb file)
+git push origin develop
+git push origin master
+```
+
+* Then push new version of the gem
+
+```shell
+rm -rf *.gem && gem build $(basename "$PWD").gemspec && gem push *.gem
+```
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
