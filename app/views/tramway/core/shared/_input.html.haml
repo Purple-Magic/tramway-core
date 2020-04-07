@@ -6,7 +6,8 @@
   - type = type[:type]
 - if type.class.in?([ Symbol, String ]) || type&.dig(:input_options)
   - type = type.to_sym
-  = form.label form_object.model.class.human_attribute_name property
+  - unless type == :hidden
+    = form.label form_object.model.class.human_attribute_name property
   - case type
   - when :default
     = form.input property, **default_params(**input_params)
@@ -15,7 +16,7 @@
   - when :polymorphic_association
     = form.input property, **polymorphic_association_params(**input_params.merge(value: value))
   - else
-    = form.input property, **else_params(**input_params.merge(type: type))
+    = form.input property, **simple_params(**input_params.merge(type: type))
 - else
   - property_value = form_object.model.values.present? && form_object.model.values[property.to_s]
   = render 'tramway/core/shared/input_extended', field: type[:extended_form_property], class_name: :record, value: property_value, f: form
