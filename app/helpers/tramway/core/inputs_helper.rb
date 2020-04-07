@@ -62,19 +62,28 @@ module Tramway::Core::InputsHelper
     }.merge options
   end
 
-  def else_params(**options)
-    {
+  def simple_params(**options)
+    builded_options = {
       as: options[:type],
       label: false,
       input_html: {
         name: "#{options[:object]}[#{options[:property]}]",
         id: "#{options[:object]}_#{options[:property]}",
-        value: build_else_value(options[:form_object], options[:property], options[:value])
+        value: build_simple_value(
+          *options.values_at(:form_object, :property, :value),
+          options.dig(:options, :input_html, :value)
+        )
       }
-    }.merge options[:options] || {}
+    }
+    if options[:options].present?
+      options[:options].dig(:input_html)&.delete(:value)
+      builded_options.merge!(options) || {}
+    end
+    builded_options
   end
 
-  def build_else_value(form_object, property, value)
-    form_object.send(property) ? form_object.model.send(property) : value
+  def build_simple_value(form_object, property, value, input_html_value)
+    value_to_add = input_html_value ? input_html_value : value
+    value_to_add || form_object.send(property)
   end
 end
