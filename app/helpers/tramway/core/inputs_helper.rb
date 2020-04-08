@@ -83,7 +83,7 @@ module Tramway::Core::InputsHelper
   end
 
   def build_simple_value(form_object, property, value, input_html_value)
-    value_to_add = input_html_value ? input_html_value : value
+    value_to_add = input_html_value || value
     value_to_add || form_object.send(property)
   end
 end
