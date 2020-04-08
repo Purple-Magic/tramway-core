@@ -63,27 +63,28 @@ module Tramway::Core::InputsHelper
   end
 
   def simple_params(**options)
-    builded_options = {
-      as: options[:type],
-      label: false,
-      input_html: {
-        name: "#{options[:object]}[#{options[:property]}]",
-        id: "#{options[:object]}_#{options[:property]}",
-        value: build_simple_value(
-          *options.values_at(:form_object, :property, :value),
-          options.dig(:options, :input_html, :value)
-        )
-      }
-    }
-    if options[:options].present?
-      options[:options].dig(:input_html)&.delete(:value)
-      builded_options.merge!(options) || {}
-    end
-    builded_options
+    builded_options = { as: options[:type], label: false,
+                        input_html: {
+                          name: "#{options[:object]}[#{options[:property]}]",
+                          id: "#{options[:object]}_#{options[:property]}",
+                          value: build_simple_value(
+                            *options.values_at(:form_object, :property, :value),
+                            options.dig(:options, :input_html, :value)
+                          )
+                        } }
+    merge_with_user_options builded_options, options
   end
 
   def build_simple_value(form_object, property, value, input_html_value)
     value_to_add = input_html_value || value
     value_to_add || form_object.send(property)
+  end
+
+  def merge_with_user_options(builded_options, options)
+    if options[:options].present?
+      options[:options].dig(:input_html)&.delete(:value)
+      builded_options.merge!(options) || {}
+    end
+    builded_options
   end
 end
