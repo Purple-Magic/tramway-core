@@ -19,9 +19,9 @@ module Tramway::Core::InputsHelper
                            options: options.merge(
                              as: :select,
                              label_method: ->(obj) { "#{obj.class.model_name.human} | #{obj.name}" },
-                             value_method: lambda do |obj|
+                             value_method: lambda { |obj|
                                "#{obj.class.to_s.underscore.sub(/_decorator$/, '')}_#{obj.id}"
-                             end
+                             }
                            )
   end
 
