@@ -53,6 +53,6 @@ class PhotoUploader < ApplicationUploader
   end
 
   def version_is_needed?(version)
-    model.class.photo_versions.include? version
+    model.class.photo_versions&.include? version
   end
 end
