@@ -20,27 +20,12 @@ class PhotoUploader < ApplicationUploader
     super && width.present? && height.present?
   end
 
-  version :medium do
+  version :medium, if: :medium_version_is_needed? do
     process resize_to_fill: [400, 400]
   end
 
-  version :small do
+  version :small, if: :small_version_is_needed? do
     process resize_to_fill: [100, 100]
-  end
-
-  # FIXME: move to tramway-landing uploader
-  version :card do
-    process resize_to_fill: [400, 400, 'North']
-  end
-
-  # FIXME: move to tramway-landing uploader
-  version :horizontal do
-    process resize_to_fill: [800, 350, 'North']
-  end
-
-  # FIXME: move to tramway-landing uploader
-  version :mini do
-    process resize_to_limit: [300, nil]
   end
 
   attr_reader :width, :height
@@ -57,5 +42,17 @@ class PhotoUploader < ApplicationUploader
     else
       @width, @height = `identify -format "%wx %h" #{file.path}`.split(/x/).map(&:to_i)
     end
+  end
+
+  def medium_version_is_needed?(new_file)
+    version_is_needed? :medium
+  end
+
+  def small_version_is_needed?(new_file)
+    version_is_needed? :small
+  end
+
+  def version_is_needed?(version)
+    model.class.photo_versions.include? version
   end
 end
