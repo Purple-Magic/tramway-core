@@ -42,6 +42,15 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
     def search_by(*attributes, **associations)
       pg_search_scope :full_text_search, against: attributes, associated_against: associations
     end
+
+    def uploader(attribute_name, uploader_name, **options)
+      mount_uploader attribute_name, "#{uploader_name.to_s.camelize}Uploader".constantize
+      @versions = options[:versions] if uploader_name == :photo
+    end
+
+    def photo_versions
+      @versions
+    end
   end
 
   # FIXME: detect inhertited locales
