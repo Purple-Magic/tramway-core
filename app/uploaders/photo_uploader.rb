@@ -44,11 +44,11 @@ class PhotoUploader < ApplicationUploader
     end
   end
 
-  def medium_version_is_needed?(new_file)
+  def medium_version_is_needed?(_new_file)
     version_is_needed? :medium
   end
 
-  def small_version_is_needed?(new_file)
+  def small_version_is_needed?(_new_file)
     version_is_needed? :small
   end
 
