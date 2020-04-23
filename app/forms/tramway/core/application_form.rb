@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
-class Tramway::Core::ApplicationForm < ::Reform::Form
+class Tramway::Core::ApplicationForm
   include Tramway::Core::ApplicationForms::AssociationObjectHelpers
   include Tramway::Core::ApplicationForms::ConstantObjectActions
   include Tramway::Core::ApplicationForms::PropertiesObjectHelper
   include Tramway::Core::ApplicationForms::ObjectHelpers
+  include Tramway::Core::ApplicationForms::SubmitHelper
 
   attr_accessor :submit_message
 
   def initialize(object = nil)
-    object ||= self.class.model_class.new
-    super(object).tap do
+    tap do
+      @object = object
       @@model_class = object.class
       @@enumerized_attributes = object.class.try :enumerized_attributes
       @@associations ||= []
@@ -23,14 +24,6 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
     end
   end
 
-  def submit(params)
-    if params
-      validate(params) ? save : collecting_associations_errors
-    else
-      Tramway::Error.raise_error(:tramway, :core, :application_form, :submit, :params_should_not_be_nil)
-    end
-  end
-
   def model_name
     @@model_class.model_name
   end
@@ -40,17 +33,23 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
   end
 
   class << self
+    include Tramway::Core::ApplicationForms::AssociationClassHelpers
     include Tramway::Core::ApplicationForms::ConstantClassActions
 
     delegate :defined_enums, to: :model_class
 
+    def properties(*props)
+      @@properties ||= []
+      @@properties += props
+      props.each do |prop|
+        delegate prop, to: :model
+        define_method("#{prop}=") { |value| model.send "#{prop}=", value }
+      end
+    end
+
     def association(property)
       properties property
       @@associations = ((defined?(@@associations) && @@associations) || []) + [property]
-    end
-
-    def associations(*properties)
-      properties.each { |property| association property }
     end
 
     def full_class_name_associations
@@ -112,14 +111,5 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
     @@associations.each do |association|
       model.send("#{association}=", send(association)) if errors.details[association] == [{ error: :blank }]
     end
-  end
-
-  def save
-    super
-  rescue ArgumentError => e
-    Tramway::Error.raise_error :tramway, :core, :application_form, :save, :argument_error, message: e.message
-  rescue StandardError => e
-    Tramway::Error.raise_error :tramway, :core, :application_form, :save, :looks_like_you_have_method,
-      method_name: e.name.to_s.gsub('=', ''), model_class: @@model_class, class_name: self.class
   end
 end

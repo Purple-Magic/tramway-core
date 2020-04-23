@@ -6,7 +6,16 @@ class ApplicationUploader < CarrierWave::Uploader::Base
   storage :file
 
   def store_dir
-    directory_id = (model.reload && model.try(:uuid)) || model.id
-    "system/uploads/#{model.class.model_name.to_s.underscore}/#{mounted_as}/#{directory_id}"
+    "system/uploads/#{model.class.model_name.to_s.underscore}/#{mounted_as}/#{id_directory}"
+  end
+
+  private
+
+  def id_directory
+    if model.respond_to?(:uuid)
+      model.reload unless model.uuid.present?
+    else
+      model.id
+    end
   end
 end

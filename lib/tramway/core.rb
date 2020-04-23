@@ -5,7 +5,6 @@ require 'tramway/collection'
 require 'tramway/collections/helper'
 require 'tramway/error'
 require 'font_awesome5_rails'
-require 'reform'
 require 'pg_search'
 require 'validators/presence_validator'
 
