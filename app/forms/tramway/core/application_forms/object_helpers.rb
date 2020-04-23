@@ -8,4 +8,8 @@ module Tramway::Core::ApplicationForms::ObjectHelpers
   def persisted?
     model.id.nil?
   end
+
+  def model
+    @object
+  end
 end
