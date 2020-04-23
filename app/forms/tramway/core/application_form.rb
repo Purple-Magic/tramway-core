@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Tramway::Core::ApplicationForm < ::Reform::Form
+class Tramway::Core::ApplicationForm
   include Tramway::Core::ApplicationForms::AssociationObjectHelpers
   include Tramway::Core::ApplicationForms::ConstantObjectActions
   include Tramway::Core::ApplicationForms::PropertiesObjectHelper
@@ -9,8 +9,8 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
   attr_accessor :submit_message
 
   def initialize(object = nil)
-    object ||= self.class.model_class.new
-    super(object).tap do
+    @object ||= object
+    tap do
       @@model_class = object.class
       @@enumerized_attributes = object.class.try :enumerized_attributes
       @@associations ||= []
@@ -25,7 +25,10 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
 
   def submit(params)
     if params
-      validate(params) ? save : collecting_associations_errors
+      params.each do |key, value|
+        send("#{key}=", value)
+      end
+      save || collecting_associations_errors
     else
       Tramway::Error.raise_error(:tramway, :core, :application_form, :submit, :params_should_not_be_nil)
     end
@@ -39,10 +42,25 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
     @@associations
   end
 
+  def model
+    @object
+  end
+
   class << self
     include Tramway::Core::ApplicationForms::ConstantClassActions
 
     delegate :defined_enums, to: :model_class
+
+    def properties(*props)
+      @@properties ||= []
+      @@properties += props
+      props.each do |prop|
+        delegate prop, to: :model
+        define_method "#{prop}=" do |value|
+          model.send "#{prop}=", value
+        end
+      end
+    end
 
     def association(property)
       properties property
@@ -115,7 +133,7 @@ class Tramway::Core::ApplicationForm < ::Reform::Form
   end
 
   def save
-    super
+    model.save
   rescue ArgumentError => e
     Tramway::Error.raise_error :tramway, :core, :application_form, :save, :argument_error, message: e.message
   rescue StandardError => e

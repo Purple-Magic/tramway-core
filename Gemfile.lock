@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    tramway-core (1.17.7.1)
+    tramway-core (1.17.9.1)
       audited (>= 4.8.0)
       bootstrap (>= 4.1.2)
       carrierwave
@@ -20,8 +20,6 @@ PATH
       loofah (>= 2.3.1)
       mini_magick (~> 4.8, >= 4.8.0)
       pg_search
-      reform
-      reform-rails (= 0.1.7)
       rmagick (~> 2.16, >= 2.16.0)
       sass-rails (~> 5.0, >= 5.0.7)
       simple_form (>= 5.0.0)
@@ -91,17 +89,7 @@ GEM
       thor (>= 0.19.4, < 2.0)
       tins (~> 1.6)
     crass (1.0.6)
-    declarative (0.0.10)
-    declarative-builder (0.1.0)
-      declarative-option (< 0.2.0)
-    declarative-option (0.1.0)
     diff-lcs (1.3)
-    disposable (0.4.7)
-      declarative (>= 0.0.9, < 1.0.0)
-      declarative-builder (< 0.2.0)
-      declarative-option (< 0.2.0)
-      representable (>= 2.4.0, <= 3.1.0)
-      uber (< 0.2.0)
     docile (1.3.2)
     enumerize (2.3.1)
       activesupport (>= 3.2)
@@ -187,16 +175,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    reform (2.2.4)
-      disposable (>= 0.4.1)
-      representable (>= 2.4.0, < 3.1.0)
-    reform-rails (0.1.7)
-      activemodel (>= 3.2)
-      reform (>= 2.2.0)
-    representable (3.0.4)
-      declarative (< 0.1.0)
-      declarative-option (< 0.2.0)
-      uber (< 0.2.0)
     rmagick (2.16.0)
     rspec-core (3.9.1)
       rspec-support (~> 3.9.1)
@@ -267,7 +245,6 @@ GEM
       sync
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
-    uber (0.1.0)
     zeitwerk (2.3.0)
 
 PLATFORMS

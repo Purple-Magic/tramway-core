@@ -127,7 +127,7 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
       it 'returns name' do
         expect { decorated_test_model.name }.to raise_error(
           RuntimeError,
-          'Please, implement `title` method in a Tramway::Core::ApplicationDecorator or TestModel'
+          'Please, implement `title` method in a Tramway::Core::ApplicationDecorator or delegate it to TestModel'
         )
       end
 
@@ -147,19 +147,6 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
         expect(decorated_test_model.associations(:belongs_to).map(&:name).should =~ []).to be_truthy
         expect(decorated_test_model.associations(:has_and_belongs_to_many).map(&:name).should =~ []).to be_truthy
         expect(decorated_test_model.associations(:has_one).map(&:name).should =~ []).to be_truthy
-      end
-
-      it 'returns attributes' do
-        date_format = '%d.%m.%Y %H:%M'
-        expect(decorated_test_model.attributes).to eq({
-          text: test_model.text,
-          created_at: test_model.created_at.strftime(date_format),
-          id: test_model.id,
-          state: test_model.human_state_name,
-          uid: test_model.uid,
-          updated_at: test_model.updated_at.strftime(date_format),
-          enumerized: test_model.enumerized.text
-        }.with_indifferent_access)
       end
     end
   end

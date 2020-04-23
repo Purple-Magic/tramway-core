@@ -30,8 +30,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'loofah', '>= 2.3.1'
   s.add_dependency 'mini_magick', '~> 4.8', '>= 4.8.0'
   s.add_dependency 'pg_search'
-  s.add_dependency 'reform'
-  s.add_dependency 'reform-rails', '0.1.7'
   s.add_dependency 'rmagick', '~> 2.16', '>= 2.16.0'
   s.add_dependency 'sass-rails', '~> 5.0', '>= 5.0.7'
   s.add_dependency 'simple_form', '>= 5.0.0'
