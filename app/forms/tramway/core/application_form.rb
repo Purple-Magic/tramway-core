@@ -39,11 +39,15 @@ class Tramway::Core::ApplicationForm
     delegate :defined_enums, to: :model_class
 
     def properties(*props)
+      props.each { |prop| property prop }
+    end
+
+    def property(prop)
       @@properties ||= []
-      @@properties += props
-      props.each do |prop|
-        delegate prop, to: :model
-        define_method("#{prop}=") { |value| model.send "#{prop}=", value }
+      @@properties << prop
+      delegate prop, to: :model
+      define_method("#{prop}=") do |value|
+        model.send "#{prop}=", value
       end
     end
 

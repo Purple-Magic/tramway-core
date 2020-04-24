@@ -4,7 +4,10 @@ module Tramway::Core::ApplicationForms::SubmitHelper
   def submit(params)
     if params
       params.each { |key, value| send("#{key}=", value) }
-      save || collecting_associations_errors
+      result = save
+      result.tap do
+        collecting_associations_errors unless result
+      end
     else
       Tramway::Error.raise_error(:tramway, :core, :application_form, :submit, :params_should_not_be_nil)
     end

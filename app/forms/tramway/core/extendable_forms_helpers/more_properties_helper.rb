@@ -9,8 +9,12 @@ module Tramway::Core::ExtendableFormsHelpers::MorePropertiesHelper
 
   def define_assignment_method(property)
     define_method "#{property[0]}=" do |value|
-      property[1][:validates].each do |pair|
-        make_validates property[0], pair, value
+      if property[1][:validates].present?
+        property[1][:validates].each do |pair|
+          make_validates property[0], pair, value
+        end
+      else
+        model.values.merge property[0] => value
       end
     end
   end

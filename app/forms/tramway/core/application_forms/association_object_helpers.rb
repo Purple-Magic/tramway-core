@@ -7,7 +7,7 @@ module Tramway::Core::ApplicationForms::AssociationObjectHelpers
     else
       self.class.send(:define_method, "#{association}=") do |value|
         model.send "#{association}_id=", value
-        super class_name.find value
+        model.send "#{association}=", class_name.find(value)
       end
     end
   end
@@ -20,7 +20,7 @@ module Tramway::Core::ApplicationForms::AssociationObjectHelpers
         Tramway::Error.raise_error :tramway, :core, :application_form, :initialize, :polymorphic_class_is_nil,
           association_name: association
       else
-        super association_class.find value.split('_')[-1]
+        model.send "#{association}=", association_class.find(value.split('_')[-1])
         send "#{association}_type=", association_class.to_s
       end
     end
