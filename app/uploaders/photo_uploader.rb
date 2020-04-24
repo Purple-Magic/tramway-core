@@ -4,7 +4,7 @@ class PhotoUploader < ApplicationUploader
   include ImageDefaults
 
   def default_url
-    ActionController::Base.helpers.asset_path('images/default_photo.png')
+    ActionController::Base.helpers.asset_path('mona_lisa_from_prado_square.png')
   end
 
   def url

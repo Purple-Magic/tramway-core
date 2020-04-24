@@ -24,7 +24,7 @@ module Tramway::Core::ExtendableFormsHelpers::ClassBuilder
           field = property[1][:object]
           define_file_property_assignment_method property, field
         else
-          next unless property[1][:validates].present?
+          #next unless property[1][:validates].present?
 
           define_assignment_method property
         end
