@@ -12,7 +12,13 @@ module Tramway::Core::ExtendableFormsHelpers::Submit::ClassHelpers
       model.values = extended_params.reduce(model.values) do |hash, pair|
         hash.merge! pair[0] => pair[1]
       end
-      super(params) && model.errors.empty?
+
+      return unless model.errors.empty?
+      params.each { |key, value| send("#{key}=", value) }
+      result = save
+      result.tap do
+        collecting_associations_errors unless result
+      end
     end
   end
 end
