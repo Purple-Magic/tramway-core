@@ -157,7 +157,7 @@ copy_to_clipboard "some_id" # some_id is HTML id of element. Content of this ele
 #### 1. Generate model that you to use. We create Organization, for example
 
 ```shell
-rails g model organization name:text public_name:text tagline:text address:text phone:text coordinates:point, state: text, favicon:text # remember! State field is required, if you use tramway-admin
+rails g model organization name:text public_name:text tagline:text address:text phone:text coordinates:point state: text favicon:text # remember! State field is required, if you use tramway-admin
 rails db:migrate
 ```
 
