@@ -14,6 +14,7 @@ class ApplicationUploader < CarrierWave::Uploader::Base
   def id_directory
     if model.respond_to?(:uuid)
       model.reload unless model.uuid.present?
+      model.uuid
     else
       model.id
     end
