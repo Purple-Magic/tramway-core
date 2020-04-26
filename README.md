@@ -34,7 +34,31 @@ Rails.application.config.assets.precompile += %w( *.jpg *.png *.js )
 ```
 # Usage
 
-## Decorators
+## Tramway::Core::ApplicationRecord
+
+### uploader
+
+Tramway use [carrierwave](https://github.com/carrierwaveuploader/carrierwave) for file uploading by default. To mount uploader you should use `uploader` method
+
+Interface: `uploader(attribute_name, uploader_name, **options)`
+
+* attribute_name - ActiveRecord attribute to mount uploader
+* uploader_name - **short** uploader name. You need to connect uploaders which are compatible with Tramway. Available uploaders:
+  * :photo - you can see it [here](https://github.com/Purple-Magic/tramway-core/blob/develop/app/uploaders/photo_uploader.rb)
+  * :file - you can see it [here](https://github.com/Purple-Magic/tramway-core/blob/develop/app/uploaders/file_uploader.rb)
+* options - you are available to set options for uploaders exactly for this model. Available options:
+  * versions - **only for :photo**. Set needed versions for file to be cropped. If empty - 0 zero versions will be used. All versions you can see [here](https://github.com/Purple-Magic/tramway-core/blob/develop/app/uploaders/photo_uploader.rb)
+  * extensions - whitelist of file extensions. If empty will be used default whitelist from the uploaders (links above)
+
+Example:
+
+```ruby
+class User < Tramway::Core::ApplicationRecord
+  uploader :avatar, :photo, version: [ :small, :medium ], extensions: [ :jpg, :jpeg ]
+end
+```
+
+## Tramway::Core::ApplicationDecorator
 ### Associations
 
 Your can decorate association models. Supporting all types of association
