@@ -16,10 +16,6 @@ class PhotoUploader < ApplicationUploader
     end
   end
 
-  def present?
-    super && width.present? && height.present?
-  end
-
   version :medium, if: :medium_version_is_needed? do
     process resize_to_fill: [400, 400]
   end
