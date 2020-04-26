@@ -46,10 +46,15 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
     def uploader(attribute_name, uploader_name, **options)
       mount_uploader attribute_name, "#{uploader_name.to_s.camelize}Uploader".constantize
       @versions = options[:versions] if uploader_name == :photo
+      @extensions = options[:extensions]
     end
 
     def photo_versions
       @versions
+    end
+
+    def file_extensions
+      @extensions
     end
   end
 

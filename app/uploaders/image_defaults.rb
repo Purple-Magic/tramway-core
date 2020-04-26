@@ -8,7 +8,7 @@ module ImageDefaults
       [mounted_as, version_name].compact.join('_') << '.gif'
   end
 
-  def extension_white_list
-    %w[jpg jpeg gif png]
+  def extension_whitelist
+    model.class.file_extensions || %w[jpg jpeg gif png]
   end
 end
