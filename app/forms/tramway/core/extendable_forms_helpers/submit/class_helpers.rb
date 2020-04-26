@@ -5,20 +5,14 @@ module Tramway::Core::ExtendableFormsHelpers::Submit::ClassHelpers
     define_method 'submit' do |params|
       model.values ||= {}
       extended_params = extended(simple_properties, more_properties, params)
-      params.each do |key, value|
-        method_name = "#{key}="
-        send method_name, value if respond_to?(method_name)
-      end
+      every_attribute_set params
       model.values = extended_params.reduce(model.values) do |hash, pair|
         hash.merge! pair[0] => pair[1]
       end
 
       return unless model.errors.empty?
-      params.each { |key, value| send("#{key}=", value) }
-      result = save
-      result.tap do
-        collecting_associations_errors unless result
-      end
+
+      save_in_submit params
     end
   end
 end
