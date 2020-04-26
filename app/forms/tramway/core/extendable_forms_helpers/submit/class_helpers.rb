@@ -14,6 +14,7 @@ module Tramway::Core::ExtendableFormsHelpers::Submit::ClassHelpers
       end
 
       return unless model.errors.empty?
+
       params.each { |key, value| send("#{key}=", value) }
       result = save
       result.tap do
