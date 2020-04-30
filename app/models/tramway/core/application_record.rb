@@ -12,7 +12,7 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
     state :removed
 
     event :remove do
-      transition active: :remove
+      transition active: :removed
     end
   end
 
