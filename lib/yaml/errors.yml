@@ -29,6 +29,7 @@ tramway:
     associations:
       object_helper:
         please_specify_association_name: "Please, specify `%{association_name}` association class_name in %{object_class} model. For example: `has_many :%{association_name}, class_name: '%{association_class_name}'`"
+        habtm_add_class_not_defined: "You should define class `%{class}` to be able add and remove `%{association_name}`"
       class_helper:
         model_does_not_have_association: "Model %{object_class} does not have association named `%{association_name}`"
     application_decorator:

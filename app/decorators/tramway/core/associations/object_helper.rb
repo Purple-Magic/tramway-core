@@ -36,6 +36,15 @@ module Tramway::Core::Associations::ObjectHelper
   end
 
   def add_association_form_class_name(object, association_name)
-    "Admin::#{object.class.to_s.pluralize}::Add#{association_name.to_s.camelize.singularize}Form".constantize
+    form_class = "Admin::#{object.class.to_s.pluralize}::Add#{association_name.to_s.camelize.singularize}Form"
+
+    begin
+      form_class.constantize
+    rescue
+      Tramway::Error.raise_error(
+        :tramway, :core, :associations, :object_helper, :habtm_add_class_not_defined,
+        class: form_class, association_name: association_name
+      )
+    end
   end
 end
