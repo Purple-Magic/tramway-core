@@ -15,4 +15,8 @@ class Tramway::Core::ApplicationController < ActionController::Base
   def model_class
     params[:model].constantize
   end
+
+  def authenticated_user
+    (defined?(current_user) && current_user.try(:model)) || (defined?(current_admin) && current_admin.model)
+  end
 end
