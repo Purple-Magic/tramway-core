@@ -5,6 +5,10 @@ Metrics/MethodLength:
   Exclude:
     - spec/dummy/db/migrate/*.rb
     - app/forms/tramway/core/extendable_forms_helpers/class_builder.rb
+Metrics/MethodLength:
+  Max: 13
+  Include:
+    - app/decorators/tramway/core/associations/class_helper.rb
 Metrics/LineLength:
   Max: 120
   Exclude:

@@ -29,15 +29,16 @@ module Tramway::Core::Associations::ClassHelper
   def define_main_association_method(association_name, decorator)
     define_method association_name do
       association = object.class.reflect_on_association(association_name)
-      return if association_type(association) == :has_one && object.send(association_name).nil?
+      type = association_type(association)
+      return if association_has_one_without_object(object, association_name, type)
 
       check_association object, association_name, association
       decorator_class_name = decorator || decorator_class_name(class_name(association))
-      if association_type(association).in? %i[has_many has_and_belongs_to_many]
-        return associations_collection(object, association_name, decorator_class_name)
-      end
-      if association_type(association).in? %i[belongs_to has_one]
-        return decorator_class_name.decorate object.send association_name
+      case type
+      when :has_many, :has_and_belongs_to_many
+        associations_collection(object, association_name, decorator_class_name)
+      when :belongs_to, :has_one
+        decorator_class_name.decorate(association_object(object, association_name))
       end
     end
   end

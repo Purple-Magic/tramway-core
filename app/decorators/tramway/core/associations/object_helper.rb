@@ -47,4 +47,12 @@ module Tramway::Core::Associations::ObjectHelper
       )
     end
   end
+
+  def association_has_one_without_object(object, association_name, association_type)
+    association_type == :has_one && object.send(association_name).nil?
+  end
+
+  def association_object(object, association_name)
+    object.send association_name
+  end
 end
