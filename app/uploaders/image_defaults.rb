@@ -9,6 +9,6 @@ module ImageDefaults
   end
 
   def extension_whitelist
-    model.class.file_extensions || %w[jpg jpeg gif png svg]
+    model.class.file_extensions || %w[jpg jpeg gif png]
   end
 end
