@@ -40,11 +40,19 @@ module Tramway::Core::Associations::ObjectHelper
 
     begin
       form_class.constantize
-    rescue
+    rescue StandardError
       Tramway::Error.raise_error(
         :tramway, :core, :associations, :object_helper, :habtm_add_class_not_defined,
         class: form_class, association_name: association_name
       )
     end
+  end
+
+  def association_has_one_without_object(object, association_name, association_type)
+    association_type == :has_one && object.send(association_name).nil?
+  end
+
+  def association_object(object, association_name)
+    object.send association_name
   end
 end
