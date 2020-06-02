@@ -69,7 +69,7 @@ class Tramway::Core::ApplicationDecorator
       model_class.try(:model_name)
     end
 
-    def filters
+    def list_filters
       {}
     end
   end
