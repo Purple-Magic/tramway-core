@@ -68,6 +68,10 @@ class Tramway::Core::ApplicationDecorator
     def model_name
       model_class.try(:model_name)
     end
+
+    def filters
+      {}
+    end
   end
 
   def link

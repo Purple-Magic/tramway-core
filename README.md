@@ -46,6 +46,7 @@ Interface: `uploader(attribute_name, uploader_name, **options)`
 * uploader_name - **short** uploader name. You need to connect uploaders which are compatible with Tramway. Available uploaders:
   * :photo - you can see it [here](https://github.com/Purple-Magic/tramway-core/blob/develop/app/uploaders/photo_uploader.rb)
   * :file - you can see it [here](https://github.com/Purple-Magic/tramway-core/blob/develop/app/uploaders/file_uploader.rb)
+  * :ico - you can see [here](https://github.com/Purple-Magic/tramway-core/blob/develop/app/uploaders/ico_uploader.rb)
 * options - you are available to set options for uploaders exactly for this model. Available options:
   * versions - **only for :photo**. Set needed versions for file to be cropped. If empty - 0 zero versions will be used. All versions you can see [here](https://github.com/Purple-Magic/tramway-core/blob/develop/app/uploaders/photo_uploader.rb)
   * extensions - whitelist of file extensions. If empty will be used default whitelist from the uploaders (links above)
@@ -181,7 +182,7 @@ copy_to_clipboard "some_id" # some_id is HTML id of element. Content of this ele
 #### 1. Generate model that you to use. We create Organization, for example
 
 ```shell
-rails g model organization name:text public_name:text tagline:text address:text phone:text coordinates:point state: text favicon:text # remember! State field is required, if you use tramway-admin
+rails g tramway:core:application
 rails db:migrate
 ```
 
