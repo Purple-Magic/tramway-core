@@ -196,7 +196,7 @@ Tramway::Core.initialize_application model_class: Organization
 
 ```ruby
 rails c
-Organization.create! public_name: 'Tramway', name: :organization, tagline: 'Tramway is not buggy, LOL!'
+Organization.create! public_name: 'Tramway', name: :organization, tagline: 'Tramway is not buggy, LOL!', main_image: 'https://raw.githubusercontent.com/ulmic/tramway-dev/develop/logo.png'
 ```
 
 #### 4. Add model to singleton to the `tramway-admin` admin panel to be able to change its data
