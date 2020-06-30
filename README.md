@@ -177,7 +177,23 @@ Something like this:
 copy_to_clipboard "some_id" # some_id is HTML id of element. Content of this element will be copied to the clipboard after pressing the button
 ```
 
-## How to create model that will be an Application Model for the Tramway
+# Every Tramway application need initialized @application object (or if you create Tramway plugin, it should be @application_engine object).
+
+You don't need to initialize this object yourself, just configurate application with Tramway. You have **2** options of this:
+
+## Option 1. If you want to change @application object just in the code base.
+
+```shell
+rails g tramway:core:application
+```
+
+*config/initializers/tramway.rb*
+
+```ruby
+Tramway::Core.initialize_application name: :your_application_name
+```
+
+## Option 2. If you want to change @application object from admin panel. How to create model that will be an Application Model for the Tramway
 
 #### 1. Generate model that you to use. We create Organization, for example
 
