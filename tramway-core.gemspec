@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'clipboard-rails'
   s.add_dependency 'enumerize', '~> 2.1', '>= 2.1.2'
   s.add_dependency 'font_awesome5_rails'
-  s.add_dependency 'haml-rails', '~> 1.0', '>= 1.0.0'
+  s.add_dependency 'haml-rails'
   s.add_dependency 'kaminari'
   s.add_dependency 'loofah', '>= 2.3.1'
   s.add_dependency 'mini_magick', '~> 4.8', '>= 4.8.0'
