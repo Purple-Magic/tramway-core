@@ -6,7 +6,7 @@
 //= require bootstrap-datepicker-1.8.0
 //= require bootstrap-datepicker-1.8.0.ru.min
 //= require font_awesome5
-//= require clipboard
+// require clipboard FIXME should be optional requiring
 //= require_tree .
 
 window.i18n_locale = function(locale) {
