@@ -13,7 +13,9 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@master
+      with:
+        name: purple-magic/tramway_test
     - name: Set up Ruby
       uses: actions/setup-ruby@v1
       with:
@@ -25,7 +27,7 @@ jobs:
     - name: Build and test with Rake
       run: |
         gem install bundler -v '2.1.2'
-        make updated_tests
+        make github_actions_test
         rubocop
         
     - name: Coveralls
