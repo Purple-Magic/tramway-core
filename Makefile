@@ -5,5 +5,5 @@ updated_tests:
 	rake
 
 github_actions_test:
-	cd tramway_test && bundle install && rails db:create db:migrate
+	bundle install && rails db:create db:migrate
 	rake
