@@ -25,8 +25,7 @@ jobs:
     - name: Build and test with Rake
       run: |
         gem install bundler -v '2.1.2'
-        bundle install --jobs 4 --retry 3
-        bundle exec rspec
+        make updated_tests
         rubocop
         
     - name: Coveralls
