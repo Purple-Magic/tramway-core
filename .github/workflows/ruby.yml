@@ -33,9 +33,8 @@ jobs:
     - name: Build and test with Rake
       run: |
         gem install bundler -v '2.1.2'
-        echo $(ls)
         bundle install
-        bundle exec rubocop
+        cd spec/dummy/ && rails db:create db:migrate
         
     - name: Coveralls
       uses: coverallsapp/github-action@master
