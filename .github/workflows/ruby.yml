@@ -20,7 +20,8 @@ jobs:
     - name: Clone dummy repo
       uses: actions/checkout@master
       with:
-        name: purple-magic/tramway_test
+        repository: purple-magic/tramway_test
+        path: spec/dummy
     - name: Install PostgreSQL 11 client
       run: |
         sudo apt-get -yqq install libpq-dev
@@ -29,8 +30,7 @@ jobs:
       run: |
         gem install bundler -v '2.1.2'
         bundle install
-        echo $(ls)
-        rubocop
+        bundle exec rubocop
         
     - name: Coveralls
       uses: coverallsapp/github-action@master
