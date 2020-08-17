@@ -17,6 +17,10 @@ jobs:
       uses: actions/setup-ruby@v1
       with:
         ruby-versions: 2.6.5, 2.7.0, 2.5.7, 2.4.9
+    - name: Clone dummy repo
+      uses: actions/checkout@master
+      with:
+        name: purple-magic/tramway_test
     - name: Install PostgreSQL 11 client
       run: |
         sudo apt-get -yqq install libpq-dev
@@ -25,14 +29,8 @@ jobs:
       run: |
         gem install bundler -v '2.1.2'
         bundle install
+        echo $(ls)
         rubocop
-
-    - uses: actions/checkout@master
-      with:
-        name: purple-magic/tramway_test
-      run: 
-        gem install bundler -v '2.1.2'
-        make github_actions_test
         
     - name: Coveralls
       uses: coverallsapp/github-action@master
