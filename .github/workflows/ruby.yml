@@ -41,9 +41,8 @@ jobs:
       
     - name: Setup Database
       run: |
-        echo $(ls -R)
-        cd spec/dummy && cp config/database.yml.github-actions config/database.yml
-        cd spec/dummy && bundle exec rails db:create db:migrate
+        cd ./spec/dummy && cp config/database.yml.github-actions config/database.yml
+        cd ./spec/dummy && bundle exec rails db:create db:migrate
       env:
         RAILS_ENV: test
         POSTGRES_USER: postgres
