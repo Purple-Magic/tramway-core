@@ -20,6 +20,10 @@ jobs:
       uses: actions/setup-ruby@v1
       with:
         ruby-versions: 2.6.5, 2.7.1, 2.5.7, 2.4.9
+    - name: Clone current repo
+      uses: actions/checkout@master
+      with:
+        repository: purple-magic/tramway-core
     - name: Clone dummy repo
       uses: actions/checkout@master
       with:
@@ -29,12 +33,10 @@ jobs:
     - name: Install PostgreSQL 11 client
       run: |
         sudo apt-get -yqq install libpq-dev
-
     - name: Build and test with Rake
       run: |
         gem install bundler -v '2.1.2'
         bundle install --jobs 4 --retry 3
-        rubocop
       
     - name: Setup Database
       run: |
