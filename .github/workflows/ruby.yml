@@ -47,7 +47,7 @@ jobs:
         cd spec/dummy && bundle exec rails db:create db:migrate
       env:
         RAILS_ENV: test
-        POSTGRES_USER: postgres
+        POSTGRES_USER: runner
 
     - name: Tests
       run: |
