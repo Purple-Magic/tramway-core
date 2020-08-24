@@ -2,7 +2,6 @@ name: Ruby
 
 on: [push]
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -52,7 +51,3 @@ jobs:
     - name: Tests
       run: |
         rake
-
-    - name: Rubocop
-      run: |
-        rubocop
