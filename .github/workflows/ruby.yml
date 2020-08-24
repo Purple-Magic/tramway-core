@@ -11,6 +11,9 @@ jobs:
         image: postgres:11.5
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
 
     steps:
     - name: Set up Ruby
@@ -20,7 +23,9 @@ jobs:
     - name: Clone dummy repo
       uses: actions/checkout@master
       with:
-        name: purple-magic/tramway_test
+        repository: purple-magic/tramway_test
+        path: spec/dummy
+    
     - name: Install PostgreSQL 11 client
       run: |
         sudo apt-get -yqq install libpq-dev
@@ -28,9 +33,18 @@ jobs:
     - name: Build and test with Rake
       run: |
         gem install bundler -v '2.1.2'
-        bundle install
+        bundle install --jobs 4 --retry 3
         rubocop
-        
+      
+    - name: Setup Database
+      run: |
+        cp spec/dummy/config/database.yml.github-actions spec/dummy/config/database.yml
+        cd spec/dummy && bundle exec rails db:create db:migrate
+      env:
+        RAILS_ENV: test
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+    
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
