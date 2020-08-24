@@ -37,6 +37,7 @@ jobs:
       run: |
         gem install bundler -v '2.1.2'
         bundle install --jobs 4 --retry 3
+        rake
       
     - name: Setup Database
       run: |
@@ -46,8 +47,3 @@ jobs:
         RAILS_ENV: test
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
-    
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
