@@ -26,9 +26,10 @@ jobs:
         repository: purple-magic/tramway-core
 
     - name: Clone dummy repo
-      uses: actions/checkout@develop
+      uses: actions/checkout@master
       with:
         repository: purple-magic/tramway_test
+        branch: develop
         path: spec/dummy
     
     - name: Install PostgreSQL 11 client
