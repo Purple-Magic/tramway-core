@@ -1,4 +1,4 @@
-# Tramway::Core ![Ruby](https://github.com/Purple-Magic/tramway-core/workflows/Ruby/badge.svg)
+# Tramway::Core ![Ruby](https://github.com/Purple-Magic/tramway-core/workflows/Ruby/badge.svg) [![Gem Version](https://badge.fury.io/rb/tramway-core.svg)](https://badge.fury.io/rb/tramway-core)
 
 *If you need translation of this Readme, please message us kalashnikov@ulmic.ru. We'll translate for you and post to this page*
 
