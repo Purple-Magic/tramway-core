@@ -54,4 +54,6 @@ AllCops:
     - Gemfile
     - Rakefile
     - spec/dummy/Rakefile
+  Exclude:
+    - spec/dummy/*
   TargetRubyVersion: 2.7
