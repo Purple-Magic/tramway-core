@@ -61,12 +61,16 @@ class Tramway::Core::ApplicationForm
         options = @@model_class.reflect_on_all_associations(:belongs_to).select do |a|
           a.name == association.to_sym
         end.first&.options
+        add_polymorphic_association hash, association, options
+      end
+    end
 
-        if options&.dig(:polymorphic)
-          hash.merge! association => @@model_class.send("#{association}_type").values
-        elsif options
-          hash.merge!(association => (options[:class_name] || association.to_s.camelize).constantize)
-        end
+    def add_polymorphic_association(hash, association, options)
+      if options&.dig(:polymorphic)
+        hash.merge association => @@model_class.send("#{association}_type").values
+      elsif options
+        hash.merge(association => (options[:class_name] || association.to_s.camelize).constantize)
+      else
         hash
       end
     end
