@@ -48,7 +48,6 @@ jobs:
         RAILS_ENV: test
         POSTGRES_USER: runner
 
-  run:
     - name: Tests
       run: |
         rake
