@@ -40,6 +40,7 @@ Style/ClassVars:
     - app/forms/tramway/core/extended_application_form.rb
     - app/forms/tramway/core/application_form.rb
     - app/decorators/tramway/core/associations/class_helper.rb
+    - spec/forms/tramway/core/application_form_spec.rb
 Naming/MethodParameterName:
   Exclude:
     - app/decorators/tramway/core/associations/class_helper.rb
