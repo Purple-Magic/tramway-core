@@ -12,7 +12,7 @@ jobs:
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
         env:
-          POSTGRES_USER: postgres
+          POSTGRES_USER: runner
 
     steps:
     - name: Set up Ruby
@@ -29,6 +29,7 @@ jobs:
       uses: actions/checkout@master
       with:
         repository: purple-magic/tramway_test
+        branch: develop
         path: spec/dummy
     
     - name: Install PostgreSQL 11 client
@@ -46,8 +47,7 @@ jobs:
         cd spec/dummy && bundle exec rails db:create db:migrate
       env:
         RAILS_ENV: test
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
+        POSTGRES_USER: runner
 
     - name: Tests
       run: |
