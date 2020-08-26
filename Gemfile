@@ -7,6 +7,7 @@ gem 'state_machine', github: 'seuros/state_machine'
 
 group :development do
   gem 'better_errors'
+  gem 'rubocop'
 end
 
 group :test do

@@ -1,0 +1,26 @@
+name: Rubocop
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-versions: 2.6.5, 2.7.1, 2.5.7, 2.4.9
+
+    - name: Clone current repo
+      uses: actions/checkout@master
+      with:
+        repository: purple-magic/tramway-core
+    
+    - name: Bundle
+      run: |
+        gem install bundler -v '2.1.2'
+        bundle install --jobs 4 --retry 3
+      
+    - name: Rubocop
+      run: |
+        rubocop

@@ -34,6 +34,7 @@ RSpec.describe Tramway::Core::ApplicationDecorator do
         show_attributes
         show_associations
         collections
+        list_filters
       ]).to be_truthy
     end
 
