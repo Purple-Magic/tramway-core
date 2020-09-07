@@ -25,6 +25,17 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
     end
   end
 
+  def file_view(original, filename: nil)
+    return unless original.present?
+
+    filename ||= build_filename(original)
+    content_tag(:div) do
+      concat filename
+      concat ' '
+      concat download_button(filename: filename, original: original) if filename
+    end
+  end
+
   def enumerize_view(value)
     value.text
   end
@@ -65,6 +76,10 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
         message: e.message, attribute_name: attribute_name
       )
     end
-    concat link_to(fa_icon(:download), src_original(original), class: 'btn btn-success', download: filename) if filename
+    concat download_button(filename: filename, original: original) if filename
+  end
+
+  def download_button(filename:, original:)
+    link_to(fa_icon(:download), src_original(original), class: 'btn btn-success', download: filename)
   end
 end

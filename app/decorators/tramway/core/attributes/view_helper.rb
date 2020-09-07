@@ -15,8 +15,10 @@ module Tramway::Core::Attributes::ViewHelper
   def view_by_value(object, value, attribute)
     if value.class.in? [ActiveSupport::TimeWithZone, DateTime, Time]
       datetime_view(attribute[1])
-    elsif value.class.superclass == ApplicationUploader
+    elsif value.class == PhotoUploader
       image_view(object.send(attribute[0]))
+    elsif value.class == FileUploader
+      file_view(object.send(attribute[0]))
     elsif value.is_a? Enumerize::Value
       enumerize_view(value)
     else
