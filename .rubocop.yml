@@ -27,6 +27,7 @@ Style/ClassAndModuleChildren:
   Exclude:
     - spec/dummy/config/application.rb
     - lib/tramway/core/version.rb
+    - lib/tramway/core/generators.rb
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 Style/MixinUsage:
