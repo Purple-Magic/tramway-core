@@ -25,7 +25,8 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
   include ::PgSearch::Model
 
   def creator
-    audits.where(action: :create).first.user
+    creation_event = audits.where(action: :create).first
+    creation_event.user if creation_event.user_id.present?
   end
 
   # FIXME: detect inhertited locales
