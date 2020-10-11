@@ -251,7 +251,13 @@ Tramway::Admin.set_singleton_models Organization, project: :organization # now y
 * [Pavel Kalashnikov](https://github.com/kalashnikovisme)
 * [moshinaan](https://github.com/moshinaan)
 
-### Workflow
+### Run tests
+
+```shell
+make test
+```
+
+### Deployment workflow
 
 #### If you don't have access to push gem to rubygems then
 
