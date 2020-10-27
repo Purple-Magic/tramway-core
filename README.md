@@ -32,6 +32,7 @@ Tramway::Core.initialize_application model_class: ::Tramway::Conference::Unity #
 ```ruby
 Rails.application.config.assets.precompile += %w( *.jpg *.png *.js )
 ```
+
 # Usage
 
 ## Tramway::Core::ApplicationRecord
@@ -224,6 +225,15 @@ Tramway::Admin.set_singleton_models Organization, project: :organization # now y
 #### 5. Then continue configuration of your model in admin panel with tramway-admin gem [instruction, starting from point 8](https://github.com/ulmic/tramway-dev/tree/develop/tramway-admin#8-configurate-navbar)
 
 #### 6. Now you are able to change your application main info in admin panel
+
+## How-to
+
+### add favicon to your application
+
+*config/initializers/tramway.rb*
+```ruby
+::Tramway::Core.initialize_application attribute1: value, another_attribute: another_value, favicon: `/icon.ico` # icon should be in public folder
+```
 
 ## In Russian
 
