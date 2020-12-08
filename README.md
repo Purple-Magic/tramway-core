@@ -33,6 +33,63 @@ Tramway::Core.initialize_application model_class: ::Tramway::Conference::Unity #
 Rails.application.config.assets.precompile += %w( *.jpg *.png *.js )
 ```
 
+#### Every Tramway application need initialized @application object (or if you create Tramway plugin, it should be @application_engine object).
+
+You don't need to initialize this object yourself, just configurate application with Tramway. You have **2** options of this:
+
+## Option 1. If you want to change @application object just in the code base.
+
+```shell
+rails g tramway:core:application
+```
+
+*config/initializers/tramway.rb*
+
+```ruby
+Tramway::Core.initialize_application name: :your_application_name
+```
+
+## Option 2. If you want to change @application object from admin panel. How to create model that will be an Application Model for the Tramway
+
+#### 1. Generate model that you to use. We create Organization, for example
+
+```shell
+rails g tramway:core:application
+rails db:migrate
+```
+
+#### 2. Add model_class to Initializer
+
+```ruby
+Tramway::Core.initialize_application model_class: Organization
+```
+
+#### 3. Create 1 instance of Organization model
+
+```ruby
+rails c
+Organization.create! public_name: 'Tramway', name: :organization, tagline: 'Tramway is not buggy, LOL!', main_image: 'https://raw.githubusercontent.com/ulmic/tramway-dev/develop/logo.png'
+```
+
+#### 4. Add model to singleton to the `tramway-admin` admin panel to be able to change its data
+
+```ruby
+Tramway::Admin.set_singleton_models Organization, project: :organization # now you should use organization.name here
+```
+
+#### 5. Then continue configuration of your model in admin panel with tramway-admin gem [instruction, starting from point 8](https://github.com/ulmic/tramway-dev/tree/develop/tramway-admin#8-configurate-navbar)
+
+#### 6. Now you are able to change your application main info in admin panel
+
+## How-to
+
+### add favicon to your application
+
+*config/initializers/tramway.rb*
+```ruby
+::Tramway::Core.initialize_application attribute1: value, another_attribute: another_value, favicon: `/icon.ico` # icon should be in public folder
+```
+
 # Usage
 
 ## Tramway::Core::ApplicationRecord
@@ -176,63 +233,6 @@ Something like this:
 
 ```ruby
 copy_to_clipboard "some_id" # some_id is HTML id of element. Content of this element will be copied to the clipboard after pressing the button
-```
-
-# Every Tramway application need initialized @application object (or if you create Tramway plugin, it should be @application_engine object).
-
-You don't need to initialize this object yourself, just configurate application with Tramway. You have **2** options of this:
-
-## Option 1. If you want to change @application object just in the code base.
-
-```shell
-rails g tramway:core:application
-```
-
-*config/initializers/tramway.rb*
-
-```ruby
-Tramway::Core.initialize_application name: :your_application_name
-```
-
-## Option 2. If you want to change @application object from admin panel. How to create model that will be an Application Model for the Tramway
-
-#### 1. Generate model that you to use. We create Organization, for example
-
-```shell
-rails g tramway:core:application
-rails db:migrate
-```
-
-#### 2. Add model_class to Initializer
-
-```ruby
-Tramway::Core.initialize_application model_class: Organization
-```
-
-#### 3. Create 1 instance of Organization model
-
-```ruby
-rails c
-Organization.create! public_name: 'Tramway', name: :organization, tagline: 'Tramway is not buggy, LOL!', main_image: 'https://raw.githubusercontent.com/ulmic/tramway-dev/develop/logo.png'
-```
-
-#### 4. Add model to singleton to the `tramway-admin` admin panel to be able to change its data
-
-```ruby
-Tramway::Admin.set_singleton_models Organization, project: :organization # now you should use organization.name here
-```
-
-#### 5. Then continue configuration of your model in admin panel with tramway-admin gem [instruction, starting from point 8](https://github.com/ulmic/tramway-dev/tree/develop/tramway-admin#8-configurate-navbar)
-
-#### 6. Now you are able to change your application main info in admin panel
-
-## How-to
-
-### add favicon to your application
-
-*config/initializers/tramway.rb*
-```ruby
-::Tramway::Core.initialize_application attribute1: value, another_attribute: another_value, favicon: `/icon.ico` # icon should be in public folder
 ```
 
 ## In Russian
