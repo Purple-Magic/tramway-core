@@ -22,7 +22,7 @@ rails g tramway:core:install
 *config/initializers/tramway.rb*
 ```ruby
 # Initialize application with name
-Tramway::Core.initialize_application name: "Your application's name"
+Tramway::Core.initialize_application name: :your_application_name
 
 # Initialize application name with model_class. Model class must be a singlethon
 Tramway::Core.initialize_application model_class: ::Tramway::Conference::Unity # example was taken from tramway-conference gem
