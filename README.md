@@ -40,7 +40,7 @@ You don't need to initialize this object yourself, just configurate application 
 ## Option 1. If you want to change @application object just in the code base.
 
 ```shell
-rails g tramway:core:application
+rails g tramway:core:install
 ```
 
 *config/initializers/tramway.rb*
