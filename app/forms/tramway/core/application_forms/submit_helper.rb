@@ -18,7 +18,11 @@ module Tramway::Core::ApplicationForms::SubmitHelper
   rescue ArgumentError => e
     Tramway::Error.raise_error :tramway, :core, :application_form, :save, :argument_error, message: e.message
   rescue StandardError => e
-    Tramway::Error.raise_error :tramway, :core, :application_form, :save, :looks_like_you_have_method,
-      method_name: e.name.to_s.gsub('=', ''), model_class: @@model_class, class_name: self.class
+    if e.try :name
+      Tramway::Error.raise_error :tramway, :core, :application_form, :save, :looks_like_you_have_method,
+        method_name: e.name.to_s.gsub('=', ''), model_class: @@model_class, class_name: self.class
+    else
+      raise e
+    end
   end
 end
