@@ -40,6 +40,10 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
     value.text
   end
 
+  def yaml_view(value)
+    content_tag(:pre) { value.to_yaml }
+  end
+
   private
 
   def src_thumb(original, thumb)
