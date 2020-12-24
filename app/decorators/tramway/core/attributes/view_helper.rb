@@ -21,6 +21,8 @@ module Tramway::Core::Attributes::ViewHelper
       file_view(object.send(attribute[0]))
     elsif value.is_a? Enumerize::Value
       enumerize_view(value)
+    elsif value.is_a? Hash
+      yaml_view(value)
     else
       value
     end
