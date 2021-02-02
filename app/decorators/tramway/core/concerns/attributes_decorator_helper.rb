@@ -10,7 +10,9 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
   end
 
   def state_machine_view(object, attribute_name)
-    object.send "human_#{attribute_name}_name"
+    object.aasm(attribute_name).human_state
+  rescue
+    object.aasm.human_state
   end
 
   BASE64_REGEXP = %r{^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|

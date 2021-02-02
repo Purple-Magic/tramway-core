@@ -6,13 +6,14 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
   audited
   extend ::Enumerize
+  include ::AASM
 
-  state_machine :state, initial: :active do
-    state :active
+  aasm column: :state do
+    state :active, initial: true
     state :removed
 
     event :remove do
-      transition active: :removed
+      transitions from: :active, to: :removed
     end
   end
 
