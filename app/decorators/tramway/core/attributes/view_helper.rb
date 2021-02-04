@@ -9,7 +9,7 @@ module Tramway::Core::Attributes::ViewHelper
   end
 
   def state_machine?(object, attribute_name)
-    attribute_name.to_s.in? object.class.state_machines.keys.map(&:to_s)
+    attribute_name.to_s.in? object.class.state_machines_names.map(&:to_s)
   end
 
   def view_by_value(object, value, attribute)

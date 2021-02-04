@@ -58,6 +58,10 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
     def file_extensions
       @extensions
     end
+
+    def state_machines_names
+      AASM::StateMachineStore.fetch(self).machine_names
+    end
   end
 
   # FIXME: detect inhertited locales
