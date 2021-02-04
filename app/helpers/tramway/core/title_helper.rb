@@ -2,6 +2,7 @@
 
 module Tramway::Core::TitleHelper
   def title(page_title = default_title)
+    @application ||= Tramway::Core.application&.model_class&.first || Tramway::Core.application
     if @application.present?
       title_text = "#{page_title} | #{@application.try(:title) || @application.public_name}"
       content_for(:title) { title_text }
