@@ -46,7 +46,6 @@ module Tramway::Core::InputsHelper
         type: params.dig(model_class.to_s.underscore, "#{property}_type")
       }
     else
-      puts 'Something'
       params.dig(model_class.to_s.underscore, property.to_s)
     end
   end
