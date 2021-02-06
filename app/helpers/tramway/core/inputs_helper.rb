@@ -45,9 +45,6 @@ module Tramway::Core::InputsHelper
         id: params.dig(model_class.to_s.underscore, property.to_s),
         type: params.dig(model_class.to_s.underscore, "#{property}_type")
       }
-    when :association, 'association'
-      association = model_class.reflect_on_all_associations.select { |ass| ass.name == property }.first
-      params.dig(model_class.to_s.underscore, association.options[:class_name].underscore)
     else
       params.dig(model_class.to_s.underscore, property.to_s)
     end
