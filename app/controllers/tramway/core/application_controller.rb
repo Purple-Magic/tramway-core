@@ -5,7 +5,9 @@ class Tramway::Core::ApplicationController < ActionController::Base
   before_action :load_extensions
 
   def application
-    @application = ::Tramway::Core.application_object
+    if ::Tramway::Core.application
+      @application ||= Tramway::Core.application&.model_class&.first || Tramway::Core.application
+    end
   end
 
   def load_extensions
