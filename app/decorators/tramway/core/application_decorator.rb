@@ -82,6 +82,13 @@ class Tramway::Core::ApplicationDecorator
     end
   end
 
+  def additional_buttons
+    {
+      show: [],
+      index: []
+    }
+  end
+
   def public_path; end
 
   def model
