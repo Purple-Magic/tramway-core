@@ -27,6 +27,17 @@ class Tramway::Core::ApplicationDecorator
     )
   end
 
+  def render(view, **locals)
+    view_name = view.split('/').map.with_index do |dir, index|
+      if index == view.split('/').length - 1
+        "_#{dir}"
+      else
+        dir
+      end
+    end.join('/')
+    Haml::Engine.new(File.read"#{Rails.root}/app/views/#{view_name}.html.haml").render(self, locals)
+  end
+
   delegate :id, to: :object
   delegate :human_state_name, to: :object
 
