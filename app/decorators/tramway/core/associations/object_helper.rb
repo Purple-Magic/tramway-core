@@ -30,7 +30,7 @@ module Tramway::Core::Associations::ObjectHelper
   end
 
   def associations_collection(object, association_name, decorator_class_name)
-    object.send(association_name).active.map do |association_object|
+    object.send(association_name).map do |association_object|
       decorator_class_name.decorate association_object
     end
   end

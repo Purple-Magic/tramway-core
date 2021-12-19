@@ -8,16 +8,6 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
   extend ::Enumerize
   include ::AASM
 
-  aasm column: :state do
-    state :active, initial: true
-    state :removed
-
-    event :remove do
-      transitions from: :active, to: :removed
-    end
-  end
-
-  scope :active, -> { where state: :active }
   scope :created_by_user, lambda { |user_id|
     joins(:audits).where('audits.action = \'create\' AND audits.user_id = ?', user_id)
   }
