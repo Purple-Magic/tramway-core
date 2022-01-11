@@ -5,6 +5,13 @@ module Tramway::Core::InputsHelper
   include Tramway::Core::Inputs::PolymorphicAssociationsHelper
 
   def association_params(form_object:, property:, value:, object:, options: {})
+    full_class_name_association = form_object.class.full_class_name_association(property)
+
+    if full_class_name_association.to_s == 'Tramway::User::User'
+      user = defined?(current_user) ? current_user : current_admin
+      value = user.id
+    end
+
     build_input_attributes(object: object, property: property, options: options,
                            value: build_value_for_association(form_object, property, value),
                            collection: build_collection_for_association(form_object, property),
