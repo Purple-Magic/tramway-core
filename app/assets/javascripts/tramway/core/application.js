@@ -1,10 +1,6 @@
-// require popper FIXME should be optional requiring
 //= require jquery
 //= require jquery_ujs
 //= require jquery3
-//= require popper
-// require popper FIXME should be optional requiring
-//= require bootstrap
 //= require bootstrap-datepicker-1.8.0
 //= require bootstrap-datepicker-1.8.0.ru.min
 //= require font_awesome5
