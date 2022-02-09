@@ -6,7 +6,7 @@
   - type = type[:type]
 - if type.class.in?([ Symbol, String ]) || type&.dig(:input_options)
   - type = type.to_sym
-  - unless type == :hidden
+  - if type != :hidden && input_params.dig(:options, :label) != false
     = form.label form_object.model.class.human_attribute_name property
   - case type
   - when :default
