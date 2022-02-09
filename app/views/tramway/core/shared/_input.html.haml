@@ -14,7 +14,10 @@
   - when :association
     = form.association property, **association_params(**input_params)
   - when :hidden_association
-    = form.association property, **association_params(**input_params).merge(as: :hidden, input_html: { value: value || form_object.public_send(property).id })
+    - if form_object.public_send(property)&.id
+      = form.association property, **association_params(**input_params).merge(as: :hidden, input_html: { value: form_object.public_send(property)&.id })
+    - else 
+      = form.association property, **association_params(**input_params).merge(as: :hidden)
   - when :polymorphic_association
     = form.input property, **polymorphic_association_params(**input_params.merge(value: value))
   - else
