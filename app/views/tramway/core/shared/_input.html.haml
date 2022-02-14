@@ -20,6 +20,8 @@
       = form.association property, **association_params(**input_params).merge(as: :hidden)
   - when :polymorphic_association
     = form.input property, **polymorphic_association_params(**input_params.merge(value: value))
+  - when :react_component
+    = react_component "#{property.camelize}Input", value: value
   - else
     - options = input_params[:options] || {}
     = form.input property, **simple_params(**input_params.merge(type: type)).merge(options)
