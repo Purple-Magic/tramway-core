@@ -35,6 +35,7 @@ class Tramway::Core::ApplicationForm
   class << self
     include Tramway::Core::ApplicationForms::AssociationClassHelpers
     include Tramway::Core::ApplicationForms::ConstantClassActions
+    include Tramway::Core::ApplicationForms::Frontend
 
     delegate :defined_enums, to: :model_class
 
