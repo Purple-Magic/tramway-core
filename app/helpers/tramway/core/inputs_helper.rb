@@ -15,6 +15,7 @@ module Tramway::Core::InputsHelper
     build_input_attributes(object: object, property: property, options: options,
                            value: build_value_for_association(form_object, property, value),
                            collection: build_collection_for_association(form_object, property),
+                           include_blank: true,
                            selected: form_object.model.send("#{property}_id") || value)
   end
 
@@ -25,6 +26,7 @@ module Tramway::Core::InputsHelper
                            collection: build_collection_for_polymorphic_association(form_object, property),
                            options: options.merge(
                              as: :select,
+                             include_blank: true,
                              label_method: ->(obj) { "#{obj.class.model_name.human} | #{obj.name}" },
                              value_method: lambda { |obj|
                                "#{obj.class.to_s.underscore.sub(/_decorator$/, '')}_#{obj.id}"
