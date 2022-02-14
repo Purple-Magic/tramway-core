@@ -14,14 +14,16 @@ module Tramway::Core::ApplicationForms::AssociationObjectHelpers
 
   def define_polymorphic_association(association, _class_name)
     self.class.send(:define_method, "#{association}=") do |value|
-      association_class = value.split('_')[0..-2].join('_').camelize
-      association_class = association_class.constantize if association_class.is_a? String
-      if association_class.nil?
-        Tramway::Error.raise_error :tramway, :core, :application_form, :initialize, :polymorphic_class_is_nil,
-          association_name: association
-      else
-        model.send "#{association}=", association_class.find(value.split('_')[-1])
-        send "#{association}_type=", association_class.to_s
+      if value.present?
+        association_class = value.split('_')[0..-2].join('_').camelize
+        association_class = association_class.constantize if association_class.is_a? String 
+        if association_class.nil?
+          Tramway::Error.raise_error :tramway, :core, :application_form, :initialize, :polymorphic_class_is_nil,
+            association_name: association
+        else
+          model.send "#{association}=", association_class.find(value.split('_')[-1])
+          send "#{association}_type=", association_class.to_s
+        end
       end
     end
   end
