@@ -43,7 +43,7 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
     end
 
     def search_by(*attributes, **associations)
-      pg_search_scope :full_text_search, against: attributes, associated_against: associations
+      pg_search_scope :full_text_search, against: attributes, associated_against: associations, using: [:tsearch, :trigram]
     end
 
     def uploader(attribute_name, uploader_name, **options)
