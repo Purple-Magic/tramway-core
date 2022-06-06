@@ -23,7 +23,6 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
     end
   end
 
-
   include ::PgSearch::Model
 
   def creator

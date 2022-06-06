@@ -10,6 +10,7 @@ class Tramway::Core::ApplicationDecorator
   include ::Tramway::Core::CopyToClipboardHelper
   include ::Tramway::Core::Associations::ObjectHelper
   include ::Tramway::Core::Attributes::ViewHelper
+  include ::Tramway::Core::Concerns::TableBuilder
   include ::Tramway::ClassNameHelpers
 
   def initialize(object)
