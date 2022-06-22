@@ -39,6 +39,10 @@ class Tramway::Core::ApplicationDecorator
     Haml::Engine.new(File.read"#{Rails.root}/app/views/#{view_name}.html.haml").render(self, locals)
   end
 
+  def listed_state_machines
+    nil
+  end
+
   delegate :id, to: :object
   delegate :human_state_name, to: :object
 
