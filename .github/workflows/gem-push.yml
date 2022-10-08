@@ -8,7 +8,7 @@ jobs:
   rubocop:
     uses: ./.github/workflows/abstract_rubocop.yml
   tests:
-    uses: ./.github/workflows/tests.yml
+    uses: ./.github/workflows/abstract_tests.yml
   # push:
   #   name: Build + Publish
   #   runs-on: ubuntu-latest
