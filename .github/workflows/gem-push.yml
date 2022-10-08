@@ -9,8 +9,9 @@ jobs:
     uses: ./.github/workflows/abstract_rubocop.yml
   tests:
     uses: ./.github/workflows/abstract_tests.yml
+    needs: [rubocop]
   push:
-    needs: [rubocop, tests]
+    needs: [tests]
     name: Build + Publish
     runs-on: ubuntu-latest
     permissions:
