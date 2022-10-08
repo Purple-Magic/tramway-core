@@ -5,9 +5,9 @@ class Tramway::Core::ApplicationController < ActionController::Base
   before_action :load_extensions
 
   def application
-    if ::Tramway::Core.application
-      @application ||= Tramway::Core.application&.model_class&.first || Tramway::Core.application
-    end
+    return unless ::Tramway::Core.application
+
+    @application ||= Tramway::Core.application&.model_class&.first || Tramway::Core.application
   end
 
   def load_extensions
