@@ -4,7 +4,10 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ['2.4', '2.5', '2.6', '2.7']
     services:
       postgres:
         image: postgres:11.5
@@ -13,11 +16,13 @@ jobs:
         env:
           POSTGRES_USER: runner
 
+    runs-on: ubuntu-latest
     steps:
     - name: Set up Ruby
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-versions: 2.6.5, 2.7.1, 2.5.7, 2.4.9
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
 
     - name: Clone current repo
       uses: actions/checkout@master

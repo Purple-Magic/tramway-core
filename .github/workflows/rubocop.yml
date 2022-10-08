@@ -9,7 +9,7 @@ jobs:
     - name: Set up Ruby
       uses: actions/setup-ruby@v1
       with:
-        ruby-versions: 2.6.5, 2.7.1, 2.5.7, 2.4.9
+        ruby-version: 2.7.6
 
     - name: Clone current repo
       uses: actions/checkout@master

@@ -36,7 +36,7 @@ class Tramway::Core::ApplicationDecorator
         dir
       end
     end.join('/')
-    Haml::Engine.new(File.read"#{Rails.root}/app/views/#{view_name}.html.haml").render(self, locals)
+    Haml::Engine.new(File.read("#{Rails.root}/app/views/#{view_name}.html.haml")).render(self, locals)
   end
 
   def listed_state_machines
@@ -44,30 +44,16 @@ class Tramway::Core::ApplicationDecorator
   end
 
   delegate :id, to: :object
-  delegate :human_state_name, to: :object
 
   class << self
     include ::Tramway::Core::Associations::ClassHelper
     include ::Tramway::Core::Delegating::ClassHelper
-
-    def collections
-      [:all]
-    end
-
-    def list_attributes
-      []
-    end
-
-    def show_attributes
-      []
-    end
-
-    def show_associations
-      []
-    end
+    include ::Tramway::Core::Default::ValuesHelper
 
     def decorate(object_or_array)
-      if object_or_array.class.superclass == ActiveRecord::Relation || object_or_array.class.to_s.include?('ActiveRecord_AssociationRelation')
+      is_activerecord_relation = object_or_array.class.superclass == ActiveRecord::Relation
+      is_activerecord_association_relation = object_or_array.class.to_s.include?('ActiveRecord_AssociationRelation')
+      if is_activerecord_relation || is_activerecord_association_relation
         decorated_array = object_or_array.map do |obj|
           new obj
         end
@@ -84,10 +70,6 @@ class Tramway::Core::ApplicationDecorator
     def model_name
       model_class.try(:model_name)
     end
-
-    def list_filters
-      {}
-    end
   end
 
   def link
@@ -99,10 +81,7 @@ class Tramway::Core::ApplicationDecorator
   end
 
   def additional_buttons
-    {
-      show: [],
-      index: []
-    }
+    { show: [], index: [] }
   end
 
   def public_path; end
@@ -131,10 +110,6 @@ class Tramway::Core::ApplicationDecorator
       end
       hash.merge! attribute[0] => build_viewable_value(object, attribute)
     end
-  end
-
-  def yes_no(boolean_attr)
-    boolean_attr.to_s == 'true' ? I18n.t('helpers.yes') : I18n.t('helpers.no')
   end
 
   protected

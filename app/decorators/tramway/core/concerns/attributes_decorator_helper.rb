@@ -10,8 +10,9 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
   end
 
   def state_machine_view(object, attribute_name)
-    I18n.t("state_machines.#{object.class.model_name.to_s.underscore}.#{attribute_name}.states.#{object.send(attribute_name)}")
-  rescue
+    state = object.send(attribute_name)
+    I18n.t("state_machines.#{object.class.model_name.to_s.underscore}.#{attribute_name}.states.#{state}")
+  rescue StandardError
     object.aasm.human_state
   end
 
@@ -87,5 +88,9 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
 
   def download_button(filename:, original:)
     link_to(fa_icon(:download), src_original(original), class: 'btn btn-success', download: filename)
+  end
+
+  def yes_no(boolean_attr)
+    boolean_attr.to_s == 'true' ? I18n.t('helpers.yes') : I18n.t('helpers.no')
   end
 end

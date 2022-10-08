@@ -45,6 +45,8 @@ Style/ClassVars:
 Naming/MethodParameterName:
   Exclude:
     - app/decorators/tramway/core/associations/class_helper.rb
+Style/MultilineBlockChain:
+  Enabled: false
 AllCops:
   Include:
     - app/**/*.rb
