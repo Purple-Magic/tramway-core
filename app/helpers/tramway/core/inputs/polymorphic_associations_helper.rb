@@ -14,8 +14,8 @@ module Tramway::Core::Inputs::PolymorphicAssociationsHelper
   def build_value_for_polymorphic_association(form_object, property, value)
     if form_object.send(property).present?
       "#{form_object.send(property).class.to_s.underscore}_#{form_object.send(property).id}"
-    else
-      "#{value[:type]&.underscore}_#{value[:id]}" if value[:type].present? && value[:id].present?
+    elsif value[:type].present? && value[:id].present?
+      "#{value[:type]&.underscore}_#{value[:id]}"
     end
   end
 
