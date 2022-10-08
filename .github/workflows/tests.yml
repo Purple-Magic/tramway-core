@@ -7,8 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        ruby: ['2.3', '2.4', '2.5', '2.6', '2.7']
+        ruby: ['2.4', '2.5', '2.6', '2.7']
     services:
       postgres:
         image: postgres:11.5
@@ -17,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: runner
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
