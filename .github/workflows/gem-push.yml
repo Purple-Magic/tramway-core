@@ -1,4 +1,4 @@
-name: Ruby Gem
+name: Gem Push
 
 on:
   push:
@@ -6,9 +6,9 @@ on:
 
 jobs:
   rubocop:
-    uses: ./.github/workflows/reusable_rubocop.yml
-  # tests:
-  #   uses: ./.github/workflows/tests.yml
+    uses: ./.github/workflows/abstract_rubocop.yml
+  tests:
+    uses: ./.github/workflows/tests.yml
   # push:
   #   name: Build + Publish
   #   runs-on: ubuntu-latest

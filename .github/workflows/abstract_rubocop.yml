@@ -1,4 +1,4 @@
-name: Reusable rubocop
+name: Abstract Rubocop
 
 on: [workflow_call]
 
