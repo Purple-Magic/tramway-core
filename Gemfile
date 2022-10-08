@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 gemspec
 
-gem 'state_machine', github: 'seuros/state_machine'
+gem 'aasm'
 
 group :development do
   gem 'better_errors'

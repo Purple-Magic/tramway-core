@@ -44,7 +44,6 @@ class Tramway::Core::ApplicationDecorator
   end
 
   delegate :id, to: :object
-  delegate :human_state_name, to: :object
 
   class << self
     include ::Tramway::Core::Associations::ClassHelper
