@@ -16,7 +16,7 @@ module Tramway::Core::ApplicationForms::AssociationObjectHelpers
     self.class.send(:define_method, "#{association}=") do |value|
       if value.present?
         association_class = value.split('_')[0..-2].join('_').camelize
-        association_class = association_class.constantize if association_class.is_a? String 
+        association_class = association_class.constantize if association_class.is_a? String
         if association_class.nil?
           Tramway::Error.raise_error :tramway, :core, :application_form, :initialize, :polymorphic_class_is_nil,
             association_name: association

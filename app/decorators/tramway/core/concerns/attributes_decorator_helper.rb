@@ -11,7 +11,7 @@ module Tramway::Core::Concerns::AttributesDecoratorHelper
 
   def state_machine_view(object, attribute_name)
     I18n.t("state_machines.#{object.class.model_name.to_s.underscore}.#{attribute_name}.states.#{object.send(attribute_name)}")
-  rescue
+  rescue StandardError
     object.aasm.human_state
   end
 

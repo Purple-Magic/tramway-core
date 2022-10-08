@@ -11,9 +11,9 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
   scope :created_by_user, lambda { |user_id|
     joins(:audits).where('audits.action = \'create\' AND audits.user_id = ?', user_id)
   }
-  scope :admin_scope, -> (_arg) { all }
+  scope :admin_scope, ->(_arg) { all }
 
-  # FIXME remove this after testing soft-deletion
+  # FIXME: remove this after testing soft-deletion
   aasm column: :state do
     state :active, initial: true
     state :removed
@@ -42,7 +42,7 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
     end
 
     def search_by(*attributes, **associations)
-      pg_search_scope :full_text_search, against: attributes, associated_against: associations, using: [:tsearch, :trigram]
+      pg_search_scope :full_text_search, against: attributes, associated_against: associations, using: %i[tsearch trigram]
     end
 
     def uploader(attribute_name, uploader_name, **options)

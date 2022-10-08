@@ -36,7 +36,7 @@ class Tramway::Core::ApplicationDecorator
         dir
       end
     end.join('/')
-    Haml::Engine.new(File.read"#{Rails.root}/app/views/#{view_name}.html.haml").render(self, locals)
+    Haml::Engine.new(File.read("#{Rails.root}/app/views/#{view_name}.html.haml")).render(self, locals)
   end
 
   def listed_state_machines
