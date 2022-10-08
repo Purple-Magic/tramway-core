@@ -6,7 +6,7 @@ on:
 
 jobs:
   rubocop:
-    uses: ./.github/workflows/rubocop.yml
+    uses: ./.github/workflows/reusable_rubocop.yml
   # tests:
   #   uses: ./.github/workflows/tests.yml
   # push:
