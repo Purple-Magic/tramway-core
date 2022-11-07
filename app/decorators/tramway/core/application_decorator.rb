@@ -28,6 +28,10 @@ class Tramway::Core::ApplicationDecorator
     )
   end
 
+  def present?
+    object.present?
+  end
+
   def render(view, **locals)
     view_name = view.split('/').map.with_index do |dir, index|
       if index == view.split('/').length - 1
