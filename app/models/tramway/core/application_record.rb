@@ -7,6 +7,7 @@ class Tramway::Core::ApplicationRecord < ActiveRecord::Base
   audited
   extend ::Enumerize
   include ::AASM
+  acts_as_paranoid
 
   scope :created_by_user, lambda { |user_id|
     joins(:audits).where('audits.action = \'create\' AND audits.user_id = ?', user_id)
